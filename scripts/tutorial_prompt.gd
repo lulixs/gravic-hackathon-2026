@@ -2,35 +2,41 @@ extends CanvasLayer
 
 signal all_steps_complete
 
+@onready var panel: Control = $Panel
 @onready var label: Label = $Panel/Label
 
 var _steps: Array = []
 var _index := 0
+var _started := false
 
 func _ready() -> void:
 	_steps = [
 		{"action": "move",          "message": "Use WASD to move"},
-		{"action": "attack",        "message": "Left-click to attack — hold for a charged strike"},
+		{"action": "attack",        "message": "Left-click to attack — HOLD until the blade glows red for a max-charge strike"},
 		{"action": "block",         "message": "Right-click to block"},
-		{"action": "dodge",         "message": "Shift to dodge — costs stamina"},
+		{"action": "dodge",         "message": "Shift to dodge — costs stamina, grants i-frames"},
 		{"action": "upgrade_menu",  "message": "Press C to open the upgrade menu"},
 		{"action": "kill_all",      "message": "Defeat the spiders to find your first weapon"},
 	]
+	panel.visible = false
+
+func hide_panel() -> void:
+	panel.visible = false
+
+func begin() -> void:
+	_started = true
 	_show_current()
 
 func _show_current() -> void:
 	if _index >= _steps.size():
-		label.text = ""
-		$Panel.visible = false
+		panel.visible = false
 		all_steps_complete.emit()
 		return
-	$Panel.visible = true
+	panel.visible = true
 	label.text = _steps[_index]["message"]
 
 func _input(_event: InputEvent) -> void:
-	# Use _input (not _unhandled_input) so we still catch C even when the upgrade
-	# menu also handles it and marks the event as handled.
-	if _index >= _steps.size():
+	if not _started or _index >= _steps.size():
 		return
 	var action: String = _steps[_index]["action"]
 	match action:
@@ -45,7 +51,7 @@ func _input(_event: InputEvent) -> void:
 			pass
 
 func complete_action(action: String) -> void:
-	if _index >= _steps.size():
+	if not _started or _index >= _steps.size():
 		return
 	if _steps[_index]["action"] == action:
 		_advance()

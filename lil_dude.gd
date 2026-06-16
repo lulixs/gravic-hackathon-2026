@@ -2,11 +2,11 @@ extends CharacterBody2D
 
 enum {IDLE, WALK, DODGE, HURT, DEAD}
 
-const MAX_SPEED = 150.0
-const ACCELERATION = 1500.0
-const FRICTION = 1500.0
+const MAX_SPEED = 350.0
+const ACCELERATION = 2000.0
+const FRICTION = 2100.0
 
-const DODGE_SPEED := 400.0
+const DODGE_SPEED := 600.0
 const DODGE_DURATION := 0.25
 const DODGE_STAMINA := 25.0
 const HURT_DURATION := 0.5

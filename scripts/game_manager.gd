@@ -15,7 +15,18 @@ var xp := 0
 var current_weapon := "stick"
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS  # keep listening for fullscreen toggle even when paused
 	reset()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_fullscreen"):
+		var win := DisplayServer.window_get_mode()
+		if win == DisplayServer.WINDOW_MODE_FULLSCREEN or win == DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		else:
+			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	elif event.is_action_pressed("quit_game"):
+		get_tree().quit()
 
 func reset() -> void:
 	hp = max_hp

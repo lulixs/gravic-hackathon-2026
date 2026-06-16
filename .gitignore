@@ -1,3 +1,64 @@
-# Godot 4+ specific ignores
+# ---- Godot 4.6 (GDScript) ----
+# Editor cache & imported assets (regenerated on open)
 .godot/
-/android/
+
+# Auto-generated translations from CSV
+*.translation
+
+# ---- Exports / build artifacts ----
+build/
+bin/
+dist/
+exports/
+*.pck
+*.zip
+*.exe
+*.dmg
+*.app/
+*.x86_64
+*.x86_32
+*.apk
+*.aab
+*.ipa
+*.wasm
+
+# Note: export_presets.cfg is intentionally NOT ignored —
+# it's typically committed so all machines share export configs.
+# (It can contain keystore passwords though; strip those before committing.)
+
+# ---- macOS ----
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+
+# ---- Windows ----
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ---- Linux / Arch ----
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ---- Editors / IDEs ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# ---- Logs ----
+logs/
+*.log
