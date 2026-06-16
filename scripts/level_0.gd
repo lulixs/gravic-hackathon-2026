@@ -3,8 +3,10 @@ extends Node2D
 @onready var prompt: CanvasLayer = $TutorialPrompt
 @onready var dialogue: CanvasLayer = $DialogueBox
 @onready var dagger: Area2D = $DaggerPickup
-@onready var exit_door: Area2D = $ExitDoor
 @onready var complete_label: CanvasLayer = $CompleteLabel
+
+const NEXT_LEVEL := "res://levels/level_1_basement.tscn"
+const ROOM := Rect2(0, 0, 1280, 720)  # the whole tutorial room
 
 var spiders_remaining := 0
 var dagger_collected := false
@@ -13,17 +15,15 @@ var mid_dialogue_shown := false
 func _ready() -> void:
 	GameManager.reset()
 
-	# tutorial happens in a single sealed room — lock the camera to it
+	# one single room — lock the camera to the whole thing (no sub-rooms, no fades)
 	var player := get_tree().get_first_node_in_group("player")
 	if player and player.has_node("Camera2D"):
 		player.get_node("Camera2D").setup([
-			{"rect": Rect2(0, 0, 704, 560), "limits": Rect2(0, 0, 672, 544)},
+			{"rect": ROOM, "limits": ROOM},
 		])
 
 	dagger.visible = false
 	dagger.monitoring = false
-	exit_door.monitoring = false
-	exit_door.modulate = Color(0.6, 0.2, 0.2, 1)
 	complete_label.visible = false
 	prompt.hide_panel()
 
@@ -33,7 +33,6 @@ func _ready() -> void:
 			spider.died.connect(_on_spider_died)
 
 	dagger.collected.connect(_on_dagger_collected)
-	exit_door.body_entered.connect(_on_exit_entered)
 
 	# kick off the intro plot scrawl, then hand control to the tutorial prompt
 	dialogue.finished.connect(_on_intro_done)
@@ -42,7 +41,7 @@ func _ready() -> void:
 		{"speaker": "Narrator", "text": "But high above the kingdom, the [color=#ff8a3a]Flying Pig[/color] has stirred. He has tasted ambition. He has tasted bacon."},
 		{"speaker": "Narrator", "text": "Only one creature small enough to slip past his guards. Only one creature stupid enough to try."},
 		{"speaker": "Narrator", "text": "Down here in the dirt, you must learn the basics: to strike, to block, to dance away from death."},
-		{"speaker": "Narrator", "text": "Three sleepy spiders nap below. Use them. When pigs fly, only the flies can save us."},
+		{"speaker": "Narrator", "text": "Three sleepy spiders nap nearby. Use them. When pigs fly, only the flies can save us."},
 	])
 
 func _on_intro_done() -> void:
@@ -57,22 +56,15 @@ func _on_spider_died() -> void:
 		if not mid_dialogue_shown:
 			mid_dialogue_shown = true
 			dialogue.finished.disconnect(_on_intro_done)
-			dialogue.finished.connect(_on_mid_done)
 			dialogue.play_lines([
 				{"speaker": "Narrator", "text": "The spiders fall. Something glints in the dust — a [color=#c08aff]Dagger[/color]. Crude, but yours."},
-				{"speaker": "Narrator", "text": "Grab it, then head for the door. The Basement waits, and it is not so kind."},
+				{"speaker": "Narrator", "text": "Grab it. The instant it's in your grip, the floor gives way — down into the Basement."},
 			])
 
-func _on_mid_done() -> void:
-	pass
-
 func _on_dagger_collected(_id: String) -> void:
-	dagger_collected = true
-	exit_door.monitoring = true
-	exit_door.modulate = Color(0.3, 0.9, 0.4, 1)
-
-func _on_exit_entered(body: Node) -> void:
-	if not dagger_collected:
+	if dagger_collected:
 		return
-	if body.is_in_group("player"):
-		get_tree().change_scene_to_file("res://levels/level_1_basement.tscn")
+	dagger_collected = true
+	# picking up the dagger drops you straight into the next level
+	await get_tree().create_timer(0.5).timeout
+	get_tree().change_scene_to_file(NEXT_LEVEL)

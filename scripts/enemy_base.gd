@@ -36,7 +36,6 @@ func _ready() -> void:
 	if _hitbox:
 		_hitbox.collision_layer = 0
 		_hitbox.collision_mask = 1
-		_hitbox.body_entered.connect(_on_hitbox_body_entered)
 	_create_health_bar()
 
 func _physics_process(delta: float) -> void:
@@ -50,6 +49,7 @@ func _physics_process(delta: float) -> void:
 			i_frames = false
 			if _sprite:
 				_sprite.modulate = Color(1, 1, 1, 1)
+	_apply_contact_damage()
 
 func take_damage(amount: float) -> void:
 	if i_frames:
@@ -136,10 +136,50 @@ func die() -> void:
 	died.emit()
 	queue_free()
 
-func _on_hitbox_body_entered(body: Node) -> void:
-	if body.is_in_group("player") and body.has_method("take_damage"):
-		body.take_damage(contact_damage)
+# Continuous contact damage: while the player overlaps our hitbox we keep calling
+# take_damage. The player's own i-frames rate-limit it, so brushing a spider chips
+# HP every i-frame window instead of only on the single frame the player enters.
+func _apply_contact_damage() -> void:
+	if contact_damage <= 0.0 or _hitbox == null or not _hitbox.monitoring:
+		return
+	for body in _hitbox.get_overlapping_bodies():
+		if body.is_in_group("player") and body.has_method("take_damage"):
+			body.take_damage(contact_damage, global_position)  # pass our pos for knockback
+			return
 
 func set_hitbox_enabled(enabled: bool) -> void:
 	if _hitbox:
 		_hitbox.monitoring = enabled
+
+# ---------------- room awareness ----------------
+# Enemies only act when the player shares their room. Rooms come from the player's
+# room camera (room_camera.gd `rooms`), so this matches the on-screen room exactly.
+
+func _player_node() -> Node2D:
+	return get_tree().get_first_node_in_group("player")
+
+func _level_rooms() -> Array:
+	var p := _player_node()
+	if p and p.has_node("Camera2D"):
+		var cam := p.get_node("Camera2D")
+		if "rooms" in cam:
+			return cam.rooms
+	return []
+
+func _room_index(rooms: Array, pos: Vector2) -> int:
+	for i in rooms.size():
+		if (rooms[i]["rect"] as Rect2).has_point(pos):
+			return i
+	return -1
+
+func player_in_same_room() -> bool:
+	var p := _player_node()
+	if p == null:
+		return false
+	var rooms := _level_rooms()
+	if rooms.is_empty():
+		return true  # no room info (e.g. single-room level) -> always active
+	var mine := _room_index(rooms, global_position)
+	if mine == -1:
+		return true  # we're outside every defined room -> stay active
+	return mine == _room_index(rooms, p.global_position)

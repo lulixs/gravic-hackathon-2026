@@ -12,6 +12,8 @@ const DODGE_STAMINA := 25.0
 const HURT_DURATION := 0.5
 const STAMINA_REGEN := 20.0  # per second
 const BLINK_INTERVAL := 0.06
+const KNOCKBACK_SPEED := 420.0  # shove distance when hit, so enemies can't glue to you
+const KNOCKBACK_TIME := 0.16
 
 var state = IDLE
 var dir := Vector2.DOWN
@@ -26,6 +28,7 @@ var charging := false
 var state_timer := 0.0
 var blink_accum := 0.0
 var dodge_dir := Vector2.ZERO
+var knockback_timer := 0.0
 
 @onready var animationTree = $AnimationTree
 @onready var animation = animationTree.get("parameters/playback")
@@ -118,7 +121,7 @@ func _process_dodge(delta: float) -> void:
 
 # ---------------- HURT ----------------
 
-func take_damage(amount: float) -> void:
+func take_damage(amount: float, from_pos: Vector2 = Vector2.INF) -> void:
 	if i_frames or state == DEAD:
 		return
 	GameManager.take_damage(amount)
@@ -129,6 +132,13 @@ func take_damage(amount: float) -> void:
 	i_frames = true
 	state_timer = HURT_DURATION
 	blink_accum = 0.0
+	# shove the player away from whatever hit them so an enemy can't stay glued on
+	if from_pos != Vector2.INF:
+		var kb := global_position - from_pos
+		if kb == Vector2.ZERO:
+			kb = -last_dir
+		velocity = kb.normalized() * KNOCKBACK_SPEED
+		knockback_timer = KNOCKBACK_TIME
 
 func _process_hurt(delta: float) -> void:
 	state_timer -= delta
@@ -136,7 +146,14 @@ func _process_hurt(delta: float) -> void:
 	if blink_accum >= BLINK_INTERVAL:
 		blink_accum = 0.0
 		frames.modulate = Color.WHITE if frames.modulate == Color(1, 0.4, 0.4, 1) else Color(1, 0.4, 0.4, 1)
-	velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+	# keep control while hurt: freezing here let enemies (esp. egg sacs) stun-lock the
+	# player in place and grind them to death. i-frames still protect during the window.
+	if knockback_timer > 0.0:
+		knockback_timer -= delta  # ride the shove out for a moment before regaining control
+	elif dir != Vector2.ZERO:
+		walk(delta)
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 	if state_timer <= 0.0:
 		i_frames = false
 		frames.modulate = Color.WHITE
@@ -145,9 +162,17 @@ func _process_hurt(delta: float) -> void:
 # ---------------- DEAD ----------------
 
 func _enter_dead() -> void:
+	if state == DEAD:
+		return
 	state = DEAD
 	velocity = Vector2.ZERO
-	frames.modulate.a = 0.3
+	# brief death beat (player stays visible, tinted red) then restart the level
+	# from scratch with all stats reset, as if you just walked in.
+	frames.modulate = Color(0.7, 0.15, 0.15, 1.0)
+	await get_tree().create_timer(1.0).timeout
+	get_tree().paused = false  # in case death overlapped a paused menu/dialogue
+	GameManager.reset()
+	get_tree().reload_current_scene()
 
 func _on_player_died() -> void:
 	if state != DEAD:

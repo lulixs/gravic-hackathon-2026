@@ -1,23 +1,21 @@
 [gd_scene format=3 uid="uid://b3spi00000001"]
 
-[ext_resource type="Script" path="res://scripts/baby_spider.gd" id="1_spi"]
+[ext_resource type="Script" uid="uid://ckgru1inkqods" path="res://scripts/baby_spider.gd" id="1_spi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_spi"]
 radius = 8.0
 
-[node name="BabySpider" type="CharacterBody2D"]
+[node name="BabySpider" type="CharacterBody2D" unique_id=1220560559]
 collision_layer = 2
-collision_mask = 1
 script = ExtResource("1_spi")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1899098682]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078296033]
 shape = SubResource("CircleShape2D_spi")
 
-[node name="Hitbox" type="Area2D" parent="."]
+[node name="Hitbox" type="Area2D" parent="." unique_id=1311880276]
 collision_layer = 0
-collision_mask = 1
 
-[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox"]
+[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox" unique_id=803996155]
 shape = SubResource("CircleShape2D_spi")

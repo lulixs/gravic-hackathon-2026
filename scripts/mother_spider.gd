@@ -10,6 +10,7 @@ const WEB := preload("res://scenes/web_projectile.tscn")
 @export var sack_interval := 7.0
 @export var web_interval := 4.0
 @export var max_sacks := 2
+@export var engage_radius := 420.0  # only wakes once the player is in her chamber AND near
 
 var _player: Node2D
 var _sack_t := 0.0
@@ -20,7 +21,7 @@ func _ready() -> void:
 	if enemy_name == "":
 		enemy_name = "Broodmother"
 	max_hp = 220.0
-	contact_damage = 14.0
+	contact_damage = 10.0
 	xp_value = 200
 	health_drop_chance = 1.0
 	health_bar_width = 64.0
@@ -35,6 +36,13 @@ func _physics_process(delta: float) -> void:
 	if not _player:
 		_player = get_tree().get_first_node_in_group("player")
 	if not _player:
+		return
+
+	# dormant until the player is in her room and close (so she doesn't attack
+	# through the gate while you're solving the pipe puzzle)
+	if not player_in_same_room() or global_position.distance_to(_player.global_position) > engage_radius:
+		velocity = velocity.move_toward(Vector2.ZERO, 400.0 * delta)
+		move_and_slide()
 		return
 
 	var to_player: Vector2 = _player.global_position - global_position
@@ -54,7 +62,7 @@ func _physics_process(delta: float) -> void:
 
 func _plant_sack() -> void:
 	var s := SACK.instantiate()
-	s.max_spawns = 2
+	s.max_alive = 2
 	get_parent().add_child(s)
 	s.global_position = global_position + Vector2(randf_range(-70, 70), randf_range(-50, 50))
 	_sacks += 1
