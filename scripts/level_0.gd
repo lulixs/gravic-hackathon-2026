@@ -13,6 +13,13 @@ var mid_dialogue_shown := false
 func _ready() -> void:
 	GameManager.reset()
 
+	# tutorial happens in a single sealed room — lock the camera to it
+	var player := get_tree().get_first_node_in_group("player")
+	if player and player.has_node("Camera2D"):
+		player.get_node("Camera2D").setup([
+			{"rect": Rect2(0, 0, 704, 560), "limits": Rect2(0, 0, 672, 544)},
+		])
+
 	dagger.visible = false
 	dagger.monitoring = false
 	exit_door.monitoring = false

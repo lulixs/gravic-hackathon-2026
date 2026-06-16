@@ -10,6 +10,7 @@ signal died
 @export var i_frame_duration := 0.3
 @export var health_bar_width := 30.0
 @export var health_bar_offset_y := -22.0
+@export var enemy_name := ""
 
 var hp := max_hp
 var i_frames := false
@@ -19,6 +20,7 @@ var _hitbox: Area2D
 var _sprite: Node  # Node2D or ColorRect — anything with modulate
 var _hb_bg: ColorRect
 var _hb_fill: ColorRect
+var _name_label: Label
 
 const XP_ORB := preload("res://scenes/xp_orb.tscn")
 const HEALTH_ORB := preload("res://scenes/health_orb.tscn")
@@ -80,6 +82,18 @@ func _create_health_bar() -> void:
 	_hb_fill.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hb_fill.z_index = 51
 	add_child(_hb_fill)
+	if enemy_name != "":
+		_name_label = Label.new()
+		_name_label.text = enemy_name
+		_name_label.size = Vector2(120, 12)
+		_name_label.position = Vector2(-60.0, health_bar_offset_y - 14.0)
+		_name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_name_label.add_theme_font_size_override("font_size", 9)
+		_name_label.add_theme_color_override("font_outline_color", Color.BLACK)
+		_name_label.add_theme_constant_override("outline_size", 4)
+		_name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_name_label.z_index = 51
+		add_child(_name_label)
 
 func _update_health_bar() -> void:
 	if _hb_fill == null:
@@ -94,6 +108,8 @@ func set_health_bar_offset(y: float) -> void:
 		_hb_bg.position.y = y
 	if _hb_fill:
 		_hb_fill.position.y = y
+	if _name_label:
+		_name_label.position.y = y - 14.0
 
 # ---------------- damage popup ----------------
 

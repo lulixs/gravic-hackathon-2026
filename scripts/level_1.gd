@@ -1,59 +1,75 @@
 extends Node2D
 
-# Level 1 — Basement. A real combat room: clear the swarm of (non-docile) bugs, the
-# Flatsword drops, grab it, then the exit opens. No GameManager.reset() here — XP,
-# upgrades, and the Dagger all carry over from the tutorial.
+# Level 1 — Basement (built on env.tscn's 3-room tilemap + room camera).
+# Flow: Room A spiders -> Room B egg sacs -> Room C pipe puzzle gate -> Broodmother
+# boss in the lower arena -> Flatsword drop -> done. No GameManager.reset(): the
+# Dagger, XP and upgrades all carry over from the tutorial.
 
+@onready var puzzle = $PipePuzzle
+@onready var gate: StaticBody2D = $Gate
 @onready var flatsword: Area2D = $FlatswordPickup
-@onready var exit_door: Area2D = $ExitDoor
 @onready var complete_label: CanvasLayer = $CompleteLabel
-@onready var dialogue: CanvasLayer = $DialogueBox
+@onready var dialogue = $DialogueBox
 
-var enemies_remaining := 0
+var sacks_total := 0
+var sacks_dead := 0
+var sacks_cleared := false
+var puzzle_solved := false
+var gate_open := false
 var weapon_collected := false
-var cleared_dialogue_shown := false
 
 func _ready() -> void:
 	flatsword.visible = false
 	flatsword.monitoring = false
-	exit_door.monitoring = false
-	exit_door.modulate = Color(0.6, 0.2, 0.2, 1)
 	complete_label.visible = false
 
-	for e in get_tree().get_nodes_in_group("enemy"):
-		enemies_remaining += 1
-		if e.has_signal("died"):
-			e.died.connect(_on_enemy_died)
-
+	for s in get_tree().get_nodes_in_group("sack"):
+		sacks_total += 1
+		s.died.connect(_on_sack_died)
+	for b in get_tree().get_nodes_in_group("boss"):
+		b.died.connect(_on_boss_died)
+	puzzle.solved.connect(_on_puzzle_solved)
 	flatsword.collected.connect(_on_weapon_collected)
-	exit_door.body_entered.connect(_on_exit_entered)
 
 	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "The Basement. Damp, dark, and crawling with things that bite."},
-		{"speaker": "Narrator", "text": "Clear them out. Mind the [color=#cfcfe6]cobwebs[/color] — they'll bog your wings down to a crawl."},
-		{"speaker": "Narrator", "text": "Survive, and a real blade awaits."},
+		{"speaker": "Narrator", "text": "The Basement. The air is thick with the smell of old eggs."},
+		{"speaker": "Narrator", "text": "Down the [color=#cfcfe6]lower chamber[/color], burst the egg sacs before they flood the place."},
+		{"speaker": "Narrator", "text": "Then the rusted pipes to the east must be turned — all pointing up — to open the brood gate."},
 	])
 
-func _on_enemy_died() -> void:
-	enemies_remaining -= 1
-	if enemies_remaining <= 0:
-		flatsword.visible = true
-		flatsword.monitoring = true
-		if not cleared_dialogue_shown:
-			cleared_dialogue_shown = true
-			dialogue.play_lines([
-				{"speaker": "Narrator", "text": "Silence at last. A [color=#9ad0ff]Flatsword[/color] lies in the muck — twice the bite of that dagger."},
-				{"speaker": "Narrator", "text": "Take it and find the way out."},
-			])
+func _on_sack_died() -> void:
+	sacks_dead += 1
+	if sacks_dead >= sacks_total and not sacks_cleared:
+		sacks_cleared = true
+		dialogue.play_lines([
+			{"speaker": "Narrator", "text": "The sacs are burst. Now the [color=#ffe08a]pipes[/color] in the east chamber — turn them all upright."},
+		])
+		_try_open_gate()
+
+func _on_puzzle_solved() -> void:
+	puzzle_solved = true
+	_try_open_gate()
+
+func _try_open_gate() -> void:
+	if gate_open or not (sacks_cleared and puzzle_solved):
+		return
+	gate_open = true
+	gate.visible = false
+	for c in gate.get_children():
+		if c is CollisionShape2D:
+			c.set_deferred("disabled", true)
+	dialogue.play_lines([
+		{"speaker": "Narrator", "text": "The brood gate grinds open. The [color=#ff6a6a]Broodmother[/color] waits below. Finish her."},
+	])
+
+func _on_boss_died() -> void:
+	flatsword.visible = true
+	flatsword.monitoring = true
+	dialogue.play_lines([
+		{"speaker": "Narrator", "text": "The Broodmother shrieks and falls. A [color=#9ad0ff]Flatsword[/color] gleams in the gore — take it."},
+	])
 
 func _on_weapon_collected(_id: String) -> void:
 	weapon_collected = true
-	exit_door.monitoring = true
-	exit_door.modulate = Color(0.3, 0.9, 0.4, 1)
-
-func _on_exit_entered(body: Node) -> void:
-	if not weapon_collected:
-		return
-	if body.is_in_group("player"):
-		complete_label.visible = true
-		get_tree().paused = true
+	complete_label.visible = true
+	get_tree().paused = true

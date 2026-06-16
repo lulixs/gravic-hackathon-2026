@@ -1,10 +1,17 @@
 extends Camera2D
 
-# Per-room camera control.
-# Each room defines a `rect` (the walkable floor area, used to detect which
-# room the player is in) and `limits` (the camera clamp box, incl. walls).
-# Coordinates are world pixels; tiles are 32px. See env.tscn tilemap.
-const ROOMS := [
+# Per-room camera. The camera is a child of the player, so it follows the player
+# automatically; this script just clamps it to the current room and fades when the
+# player crosses into a new room.
+#
+# Each level configures its own rooms by calling `setup([...])` in its _ready(),
+# passing an array of { "rect": Rect2, "limits": Rect2 } (world pixels):
+#   - rect   = the floor area used to detect which room the player is in
+#   - limits = the camera clamp box for that room (usually rect + wall thickness)
+# A single-room level just passes one entry. If setup() is never called, the
+# DEFAULT_ROOMS below (matching env.tscn) are used so that scene still works.
+
+const DEFAULT_ROOMS := [
 	{ # Room A - top-left (start)
 		"rect": Rect2(32, 32, 672, 544),
 		"limits": Rect2(0, 0, 704, 576),
@@ -21,6 +28,7 @@ const ROOMS := [
 
 @export var fade_time := 0.35
 
+var rooms: Array = DEFAULT_ROOMS
 var _player: Node2D
 var _current := 0
 var _transitioning := false
@@ -31,7 +39,24 @@ func _ready() -> void:
 	_player = get_parent()
 	position_smoothing_enabled = false
 	_make_fade_overlay()
+	_current = _room_at(_player.global_position)
 	_apply_room(_current, true)
+
+
+# Levels call this to install their own room layout.
+func setup(room_list: Array) -> void:
+	rooms = room_list
+	if rooms.is_empty():
+		return
+	_current = _room_at(_player.global_position if _player else global_position)
+	_apply_room(_current, true)
+
+
+func _room_at(p: Vector2) -> int:
+	for i in rooms.size():
+		if (rooms[i]["rect"] as Rect2).has_point(p):
+			return i
+	return _current if _current < rooms.size() else 0
 
 
 func _make_fade_overlay() -> void:
@@ -46,7 +71,9 @@ func _make_fade_overlay() -> void:
 
 
 func _apply_room(idx: int, instant := false) -> void:
-	var lim: Rect2 = ROOMS[idx]["limits"]
+	if idx < 0 or idx >= rooms.size():
+		return
+	var lim: Rect2 = rooms[idx]["limits"]
 	limit_left = int(lim.position.x)
 	limit_top = int(lim.position.y)
 	limit_right = int(lim.position.x + lim.size.x)
@@ -57,15 +84,13 @@ func _apply_room(idx: int, instant := false) -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if _transitioning:
+	if _transitioning or rooms.size() <= 1:
 		return
 	var p := _player.global_position
-	# Still inside the current room -> nothing to do.
-	if (ROOMS[_current]["rect"] as Rect2).has_point(p):
+	if (rooms[_current]["rect"] as Rect2).has_point(p):
 		return
-	# Entered a different room's floor area -> transition.
-	for i in ROOMS.size():
-		if i != _current and (ROOMS[i]["rect"] as Rect2).has_point(p):
+	for i in rooms.size():
+		if i != _current and (rooms[i]["rect"] as Rect2).has_point(p):
 			_transition_to(i)
 			return
 

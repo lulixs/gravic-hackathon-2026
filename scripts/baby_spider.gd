@@ -21,6 +21,8 @@ var _facing_right := true
 @onready var _spr := $Sprite as Sprite2D
 
 func _ready() -> void:
+	if enemy_name == "":
+		enemy_name = "Grub" if docile else "Creepling"
 	super._ready()
 	_setup_sprite()
 	_pick_wander_dir()
