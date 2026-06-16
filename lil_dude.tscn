@@ -2,7 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://csdqni4uapbky" path="res://assets/lil-dude.png" id="1_sl4o0"]
 [ext_resource type="Script" uid="uid://d4k73jkedsgxe" path="res://lil_dude.gd" id="1_ynl5m"]
-[ext_resource type="PackedScene" uid="uid://bqcjb3xtq4swe" path="res://sword.tscn" id="3_d8pxt"]
+[ext_resource type="Texture2D" uid="uid://c58cvrnb2hq53" path="res://assets/sword.png" id="3_sword"]
+[ext_resource type="Script" uid="uid://boqi2pkfrex2i" path="res://sword.gd" id="4_sword"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ynl5m"]
 size = Vector2(8, 9)
@@ -64,15 +65,9 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [],
-"method": &"step"
-}, {
-"args": [],
-"method": &"step"
-}]
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
 }
 
 [sub_resource type="Animation" id="Animation_ob7cv"]
@@ -117,15 +112,9 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"values": [{
-"args": [],
-"method": &"step"
-}, {
-"args": [],
-"method": &"step"
-}]
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"values": []
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3phj2"]
@@ -195,13 +184,14 @@ shape = SubResource("RectangleShape2D_ynl5m")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1225949879]
 libraries/ = SubResource("AnimationLibrary_3phj2")
 
+[node name="Sword" type="Sprite2D" parent="." unique_id=667790072]
+texture = ExtResource("3_sword")
+script = ExtResource("4_sword")
+BLOCK_RADIUS = 10.0
+BLOCK_SPEED = 20.0
+
 [node name="AnimationTree" type="AnimationTree" parent="." unique_id=1007929507]
 tree_root = SubResource("AnimationNodeStateMachine_1xvhg")
 anim_player = NodePath("../AnimationPlayer")
 parameters/idle/blend_position = -0.0005094409
 parameters/walk/blend_position = -0.0015282631
-
-[node name="sword" parent="." unique_id=2018324407 instance=ExtResource("3_d8pxt")]
-visible = false
-position = Vector2(10, 7)
-rotation = 0.6981317
