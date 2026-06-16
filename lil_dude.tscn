@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dh1m5jqolwygd"]
 
 [ext_resource type="Script" path="res://lil_dude.gd" id="1_ynl5m"]
 [ext_resource type="Texture2D" path="res://assets/fly.png" id="2_p3344"]

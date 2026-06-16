@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://b3tut00000001"]
+
+[ext_resource type="Script" path="res://scripts/tutorial_prompt.gd" id="1_tut"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tut"]
+bg_color = Color(0, 0, 0, 0.75)
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+
+[node name="TutorialPrompt" type="CanvasLayer"]
+script = ExtResource("1_tut")
+
+[node name="Panel" type="PanelContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -80.0
+offset_right = 260.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_tut")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 2
+text = "Use WASD to move"
+horizontal_alignment = 1
+vertical_alignment = 1

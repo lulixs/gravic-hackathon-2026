@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://b3wdgr0000001"]
+
+[ext_resource type="Script" path="res://scripts/weapon_resource.gd" id="1_wr"]
+
+[resource]
+script = ExtResource("1_wr")
+id = "dagger"
+display_name = "Dagger"
+damage_multiplier = 1.5
+stamina_jab = 10.0
+stamina_slash = 20.0

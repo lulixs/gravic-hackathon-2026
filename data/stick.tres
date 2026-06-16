@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://b3wstk0000001"]
+
+[ext_resource type="Script" path="res://scripts/weapon_resource.gd" id="1_wr"]
+
+[resource]
+script = ExtResource("1_wr")
+id = "stick"
+display_name = "Stick"
+damage_multiplier = 1.0
+stamina_jab = 15.0
+stamina_slash = 25.0
