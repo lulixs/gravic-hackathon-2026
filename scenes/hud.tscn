@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://b3hud00000001"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hp"]
+bg_color = Color(0.85, 0.15, 0.15, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_st"]
+bg_color = Color(0.95, 0.85, 0.2, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="Margin" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 4
+
+[node name="HPBar" type="ProgressBar" parent="Margin/VBox"]
+custom_minimum_size = Vector2(180, 18)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/fill = SubResource("StyleBoxFlat_hp")
+
+[node name="StaminaBar" type="ProgressBar" parent="Margin/VBox"]
+custom_minimum_size = Vector2(180, 14)
+layout_mode = 2
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/fill = SubResource("StyleBoxFlat_st")
+
+[node name="XPLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "XP: 0"
+
+[node name="WeaponLabel" type="Label" parent="Margin/VBox"]
+layout_mode = 2
+text = "Weapon: Stick"

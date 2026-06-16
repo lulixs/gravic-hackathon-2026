@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b3spi00000001"]
+
+[ext_resource type="Script" path="res://scripts/baby_spider.gd" id="1_spi"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_spi"]
+radius = 8.0
+
+[node name="BabySpider" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_spi")
+
+[node name="Sprite" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -6.0
+offset_right = 8.0
+offset_bottom = 6.0
+color = Color(0.25, 0.25, 0.25, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_spi")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("CircleShape2D_spi")
