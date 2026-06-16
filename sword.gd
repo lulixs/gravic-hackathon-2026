@@ -2,14 +2,14 @@ extends Sprite2D
 
 signal charging_changed(is_charging: bool)
 
-@export var OUTER_RADIUS = 30.0  # max distance the sword can float from the player
+@export var OUTER_RADIUS = 34.0  # max distance the sword can float from the player
 @export var INNER_RADIUS = 10.0  # min distance, so the sword never sits on top of the player
 @export var BLOCK_RADIUS = 6.0   # distance the sword pulls in to while blocking
 @export var FOLLOW_SPEED = 12.0  # how snappily the sword chases the mouse
 @export var BLOCK_SPEED = 10.0   # how quickly the sword eases in/out of the block stance
 @export var BASE_DAMAGE := 10.0
 @export var BASE_STAMINA_COST := 15.0
-@export var HITBOX_RADIUS := 14.0
+@export var HITBOX_RADIUS := 18.0
 @export var ATTACK_DURATION := 0.15
 @export var COOLDOWN_DURATION := 0.3
 @export var MAX_CHARGE_MULT := 3.0
@@ -100,9 +100,16 @@ func _process_attack(delta: float, dir: Vector2) -> void:
 					charging_changed.emit(true)
 		SwordState.CHARGING:
 			charge_time += delta
-			if Input.is_action_just_released("attack"):
+			# fire the swing as soon as the button is no longer held. checking "not pressed"
+			# (instead of just_released) catches fast clicks where press+release land on the
+			# same frame — those used to get stuck in the windup pose and never jab.
+			if not Input.is_action_pressed("attack"):
 				_launch_attack(dir)
 		SwordState.ATTACKING:
+			# poll overlaps every frame of the swing. body_entered only fires for bodies
+			# that *cross into* the hitbox after monitoring turns on — enemies already
+			# inside when the swing starts would otherwise be missed entirely.
+			_apply_overlap_hits()
 			state_timer -= delta
 			if state_timer <= 0.0:
 				hitbox.monitoring = false
@@ -151,14 +158,22 @@ func _update_charge_visual(delta: float) -> void:
 			scale = scale.lerp(Vector2.ONE, 1.0 - exp(-12.0 * delta))
 
 func _weapon_damage() -> float:
+	var dmg := BASE_DAMAGE
 	var path := "res://data/" + GameManager.current_weapon + ".tres"
 	if ResourceLoader.exists(path):
 		var res := ResourceLoader.load(path)
 		if res and "damage_multiplier" in res:
-			return BASE_DAMAGE * float(res.damage_multiplier)
-	return BASE_DAMAGE
+			dmg = BASE_DAMAGE * float(res.damage_multiplier)
+	return dmg * GameManager.damage_mult
 
 func _on_hitbox_body_entered(body: Node) -> void:
+	_try_hit(body)
+
+func _apply_overlap_hits() -> void:
+	for body in hitbox.get_overlapping_bodies():
+		_try_hit(body)
+
+func _try_hit(body: Node) -> void:
 	if body in _hit_bodies:
 		return
 	if body.is_in_group("enemy") and body.has_method("take_damage"):

@@ -13,6 +13,7 @@ var hp := max_hp
 var stamina := max_stamina
 var xp := 0
 var current_weapon := "stick"
+var damage_mult := 1.0  # global damage scaling from XP upgrades
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS  # keep listening for fullscreen toggle even when paused
@@ -33,6 +34,7 @@ func reset() -> void:
 	stamina = max_stamina
 	xp = 0
 	current_weapon = "stick"
+	damage_mult = 1.0
 	hp_changed.emit(hp, max_hp)
 	stamina_changed.emit(stamina, max_stamina)
 	xp_changed.emit(xp)
@@ -83,3 +85,6 @@ func increase_max_stamina(n: float) -> void:
 	max_stamina += n
 	stamina = clampf(stamina + n, 0.0, max_stamina)
 	stamina_changed.emit(stamina, max_stamina)
+
+func add_damage_mult(frac: float) -> void:
+	damage_mult += frac

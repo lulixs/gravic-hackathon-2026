@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b3upg00000001"]
+[gd_scene load_steps=2 format=3 uid="uid://b3upg00000001"]
 
 [ext_resource type="Script" path="res://scripts/upgrade_menu.gd" id="1_upg"]
 
@@ -21,30 +21,55 @@ layout_mode = 2
 
 [node name="VBox" type="VBoxContainer" parent="Panel/Center"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 8
 
 [node name="Title" type="Label" parent="Panel/Center/VBox"]
 layout_mode = 2
-text = "UPGRADES"
+theme_override_font_sizes/font_size = 28
+text = "STATUS & INVENTORY"
 horizontal_alignment = 1
+
+[node name="HPStat" type="Label" parent="Panel/Center/VBox"]
+layout_mode = 2
+text = "HP: 100 / 100"
+horizontal_alignment = 1
+
+[node name="StaminaStat" type="Label" parent="Panel/Center/VBox"]
+layout_mode = 2
+text = "Stamina: 100 / 100"
+horizontal_alignment = 1
+
+[node name="WeaponStat" type="Label" parent="Panel/Center/VBox"]
+layout_mode = 2
+text = "Weapon: Stick"
+horizontal_alignment = 1
+
+[node name="DamageStat" type="Label" parent="Panel/Center/VBox"]
+layout_mode = 2
+text = "Damage: 100%"
+horizontal_alignment = 1
+
+[node name="Sep1" type="HSeparator" parent="Panel/Center/VBox"]
+layout_mode = 2
 
 [node name="XPLabel" type="Label" parent="Panel/Center/VBox"]
 layout_mode = 2
-text = "XP: 0"
+theme_override_font_sizes/font_size = 20
+text = "XP: 0  —  spend it below"
 horizontal_alignment = 1
 
 [node name="HPButton" type="Button" parent="Panel/Center/VBox"]
-custom_minimum_size = Vector2(260, 36)
+custom_minimum_size = Vector2(280, 36)
 layout_mode = 2
 text = "+20 Max HP (50 XP)"
 
 [node name="StaminaButton" type="Button" parent="Panel/Center/VBox"]
-custom_minimum_size = Vector2(260, 36)
+custom_minimum_size = Vector2(280, 36)
 layout_mode = 2
 text = "+20 Max Stamina (50 XP)"
 
 [node name="DamageButton" type="Button" parent="Panel/Center/VBox"]
-custom_minimum_size = Vector2(260, 36)
+custom_minimum_size = Vector2(280, 36)
 layout_mode = 2
 text = "+10% Damage (75 XP)"
 

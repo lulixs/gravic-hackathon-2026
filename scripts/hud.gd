@@ -2,6 +2,8 @@ extends CanvasLayer
 
 @onready var hp_bar: ProgressBar = $Margin/VBox/HPBar
 @onready var stamina_bar: ProgressBar = $Margin/VBox/StaminaBar
+@onready var hp_text: Label = $Margin/VBox/HPBar/HPText
+@onready var stamina_text: Label = $Margin/VBox/StaminaBar/StaminaText
 @onready var xp_label: Label = $Margin/VBox/XPLabel
 @onready var weapon_label: Label = $Margin/VBox/WeaponLabel
 
@@ -18,10 +20,12 @@ func _ready() -> void:
 func _on_hp_changed(val: float, max_val: float) -> void:
 	hp_bar.max_value = max_val
 	hp_bar.value = val
+	hp_text.text = "%d / %d" % [roundi(val), roundi(max_val)]
 
 func _on_stamina_changed(val: float, max_val: float) -> void:
 	stamina_bar.max_value = max_val
 	stamina_bar.value = val
+	stamina_text.text = "%d / %d" % [roundi(val), roundi(max_val)]
 
 func _on_xp_changed(val: int) -> void:
 	xp_label.text = "XP: %d" % val

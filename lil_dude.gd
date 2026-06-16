@@ -107,8 +107,10 @@ func _try_dodge() -> void:
 
 func _process_dodge(delta: float) -> void:
 	state_timer -= delta
-	# decay velocity slightly during dodge so we don't slide forever after move_and_slide
-	velocity = velocity.move_toward(dodge_dir * DODGE_SPEED * 0.7, ACCELERATION * delta)
+	# hold a constant dodge velocity for the whole duration. overriding it each frame
+	# (rather than decaying from whatever speed we entered with) guarantees the lunge
+	# covers the same distance whether we were standing still or already running.
+	velocity = dodge_dir * DODGE_SPEED
 	if state_timer <= 0.0:
 		i_frames = false
 		frames.modulate.a = 1.0

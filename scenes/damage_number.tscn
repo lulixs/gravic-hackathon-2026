@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b3dmg00000001"]
+
+[ext_resource type="Script" path="res://scripts/damage_number.gd" id="1_dmg"]
+
+[node name="DamageNumber" type="Node2D"]
+z_index = 100
+script = ExtResource("1_dmg")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -40.0
+offset_top = -16.0
+offset_right = 40.0
+offset_bottom = 8.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 20
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -68,5 +68,4 @@ func _on_exit_entered(body: Node) -> void:
 	if not dagger_collected:
 		return
 	if body.is_in_group("player"):
-		complete_label.visible = true
-		get_tree().paused = true
+		get_tree().change_scene_to_file("res://levels/level_1_basement.tscn")
