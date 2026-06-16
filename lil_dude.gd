@@ -2,9 +2,9 @@ extends CharacterBody2D
 
 enum {IDLE, WALK}
 
-const MAX_SPEED = 150
-const ACCELERATION = 1500
-const FRICTION = 1500
+const MAX_SPEED = 350
+const ACCELERATION = 2000
+const FRICTION = 2100
 
 var state = IDLE # default state
 var dir = Vector2.DOWN 

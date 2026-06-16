@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dh1m5jqolwygd"]
 
-[ext_resource type="Texture2D" uid="uid://csdqni4uapbky" path="res://assets/lil-dude.png" id="1_sl4o0"]
 [ext_resource type="Script" uid="uid://d4k73jkedsgxe" path="res://lil_dude.gd" id="1_ynl5m"]
+[ext_resource type="Texture2D" uid="uid://8t5j7qbkiu56" path="res://assets/fly.png" id="2_p3344"]
 [ext_resource type="Texture2D" uid="uid://c58cvrnb2hq53" path="res://assets/sword.png" id="3_sword"]
 [ext_resource type="Script" uid="uid://boqi2pkfrex2i" path="res://sword.gd" id="4_sword"]
 
@@ -38,12 +38,12 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [5]
+"values": [4]
 }
 
 [sub_resource type="Animation" id="Animation_s47qq"]
 resource_name = "l_walk"
-length = 0.60001004
+length = 0.30001
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -53,10 +53,10 @@ tracks/0/path = NodePath("frames:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [4, 4, 5, 6, 6, 7]
+"values": [5, 6, 7]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -85,12 +85,12 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [0]
 }
 
 [sub_resource type="Animation" id="Animation_kua14"]
 resource_name = "r_walk"
-length = 0.60001004
+length = 0.30001
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -100,10 +100,10 @@ tracks/0/path = NodePath("frames:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.10302959, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [0, 0, 1, 2, 2, 3]
+"values": [1, 2, 3]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -173,9 +173,8 @@ graph_offset = Vector2(-95, 12)
 script = ExtResource("1_ynl5m")
 
 [node name="frames" type="Sprite2D" parent="." unique_id=1276334530]
-texture = ExtResource("1_sl4o0")
-hframes = 4
-vframes = 2
+texture = ExtResource("2_p3344")
+hframes = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=977228592]
 position = Vector2(0, -0.5)
