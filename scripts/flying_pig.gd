@@ -11,7 +11,7 @@ enum State { HOVER, DIVE, RECOVER }
 @export var hover_speed := 70.0
 @export var keep_distance := 170.0
 @export var dive_speed := 470.0
-@export var shoot_interval := 1.7
+@export var shoot_interval := 5.1   # a volley ~1/3 as often as before (was 1.7)
 @export var dive_interval := 5.0
 @export var dive_time := 0.55
 @export var recover_time := 0.8
