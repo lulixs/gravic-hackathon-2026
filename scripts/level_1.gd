@@ -34,8 +34,8 @@ func _ready() -> void:
 	flatsword.collected.connect(_on_weapon_collected)
 
 	dialogue.play_lines([
-		{"speaker": "Old Fly", "text": "This place forgets things quickly. Especially those with wings."},
-		{"speaker": "Old Fly", "text": "The webs didn't grow here. They were placed."},
+		{"speaker": "You", "text": "[i]This place forgets things quickly. Especially things with wings.[/i]"},
+		{"speaker": "You", "text": "[i]These webs didn't grow here. They were placed.[/i]"},
 		{"speaker": "Spider Sac", "text": "[i]More will come… More will always come…[/i]"},
 		{"speaker": "You", "text": "[i]Everything here feels… stuck. Like it's waiting to be eaten.[/i]"},
 		{"speaker": "Narrator", "text": "Burst the [color=#cfcfe6]egg sacs[/color] in the lower chamber, then turn the rusted pipes upright to open the brood gate."},
@@ -78,7 +78,7 @@ func _on_boss_died() -> void:
 	flatsword.monitoring = true
 	dialogue.play_lines([
 		{"speaker": "Broodmother", "text": "[i]The sky… was never yours… It was borrowed…[/i]"},
-		{"speaker": "Old Fly", "text": "The basement is quieter now. That is not the same as safe."},
+		{"speaker": "You", "text": "[i]The basement is quieter now. That isn't the same as safe.[/i]"},
 		{"speaker": "You", "text": "[i]Something above is brighter… but not warmer.[/i]"},
 		{"speaker": "Narrator", "text": "A [color=#9ad0ff]Flatsword[/color] gleams in the gore — take it."},
 	])

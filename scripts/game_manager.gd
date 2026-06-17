@@ -8,7 +8,7 @@ signal player_died
 signal upgrades_changed
 
 @export var max_hp := 100.0
-@export var max_stamina := 100.0
+@export var max_stamina := 50.0   # halved stamina pool
 
 var hp := max_hp
 var stamina := max_stamina

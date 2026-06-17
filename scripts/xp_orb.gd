@@ -39,5 +39,5 @@ func _collect() -> void:
 	if _collected:
 		return
 	_collected = true
-	GameManager.add_xp(value)
+	GameManager.add_xp(roundi(value * 1.5))   # +50% XP on pickup
 	queue_free()

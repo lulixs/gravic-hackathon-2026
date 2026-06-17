@@ -39,7 +39,7 @@ func _ready() -> void:
 	broadsword.collected.connect(_on_weapon_collected)
 
 	dialogue.play_lines([
-		{"speaker": "Old Fly", "text": "Outside is not freedom. It is distance from safety."},
+		{"speaker": "You", "text": "[i]Outside isn't freedom. It's just distance from safety.[/i]"},
 		{"speaker": "You", "text": "[i]The air feels wider here. But so do the dangers.[/i]"},
 		{"speaker": "Snake", "text": "[i]…hungry…[/i]"},
 		{"speaker": "Narrator", "text": "Snakes and hoppers prowl the weeds; mud drags at your wings. Stand on the three [color=#ffe08a]stone plates[/color] to raise the gate to the frog's pond."},
@@ -69,7 +69,7 @@ func _on_boss_died() -> void:
 	broadsword.monitoring = true
 	dialogue.play_lines([
 		{"speaker": "Bullfrog", "text": "[i]Even the sky… sends leftovers…[/i]"},
-		{"speaker": "Old Fly", "text": "The ground is not empty. It just hides more carefully now."},
+		{"speaker": "You", "text": "[i]The ground isn't empty. It just hides more carefully out here.[/i]"},
 		{"speaker": "You", "text": "[i]I move faster than I used to… but I still feel behind everything.[/i]"},
 		{"speaker": "Narrator", "text": "A [color=#9ad0ff]Broadsword[/color] lies half-buried in the loam — claim it."},
 	])

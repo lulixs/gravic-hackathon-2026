@@ -37,14 +37,8 @@ func _ready() -> void:
 	# kick off the intro plot scrawl, then hand control to the tutorial prompt
 	dialogue.finished.connect(_on_intro_done)
 	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "We were never meant to walk."},
-		{"speaker": "Narrator", "text": "We were meant to drift. To belong to the air without asking permission."},
-		{"speaker": "Narrator", "text": "But something below us began to look upward."},
-		{"speaker": "Pig King", "text": "[i]If I had wings… I would never fall again.[/i]"},
-		{"speaker": "Narrator", "text": "And envy learned how to build."},
-		{"speaker": "Narrator", "text": "And how to take."},
-		{"speaker": "Old Fly", "text": "Don't stay still for too long. Stillness is how they find you."},
-		{"speaker": "Old Fly", "text": "Down here in the dirt, learn the basics: to strike, to dance away from death. Three sleepy spiders nap nearby — use them."},
+		{"speaker": "You", "text": "[i]Down in the dirt, far beneath his throne. Stillness is how they find you down here — lucky for me, I was never any good at holding still.[/i]"},
+		{"speaker": "You", "text": "[i]First, the basics — strike, then dance away from death. Three sleepy spiders nap nearby. They'll do.[/i]"},
 	])
 
 func _on_intro_done() -> void:
@@ -60,8 +54,8 @@ func _on_spider_died() -> void:
 			mid_dialogue_shown = true
 			dialogue.finished.disconnect(_on_intro_done)
 			dialogue.play_lines([
-				{"speaker": "Old Fly", "text": "The spiders fall. Something glints in the dust — a [color=#c08aff]Dagger[/color]. Crude, but yours."},
-				{"speaker": "Old Fly", "text": "Grab it. The instant it's in your grip, the floor gives way — down into the Basement."},
+				{"speaker": "You", "text": "[i]The spiders fall. Something glints in the dust — a [color=#c08aff]Dagger[/color]. Crude, but it's mine now.[/i]"},
+				{"speaker": "You", "text": "[i]Grab it — and the instant it's in my grip, the floor gives way. Down into the Basement.[/i]"},
 			])
 
 func _on_dagger_collected(_id: String) -> void:

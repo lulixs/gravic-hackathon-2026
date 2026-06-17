@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b3cut00000001"]
+
+[ext_resource type="Script" path="res://scripts/intro_cutscene.gd" id="1_cut"]
+
+[node name="IntroCutscene" type="Node2D"]
+script = ExtResource("1_cut")

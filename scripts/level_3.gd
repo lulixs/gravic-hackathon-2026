@@ -40,7 +40,7 @@ func _ready() -> void:
 			$FlyingPig.half_health.connect(_on_pig_half)
 
 	dialogue.play_lines([
-		{"speaker": "Old Fly", "text": "This is where they stopped pretending."},
+		{"speaker": "You", "text": "[i]This is where they stopped pretending.[/i]"},
 		{"speaker": "You", "text": "[i]The air here feels… controlled. Like something is watching the corridors themselves.[/i]"},
 		{"speaker": "Pig Guard", "text": "Stay where you belong."},
 		{"speaker": "Pig Guard", "text": "The sky already has an owner."},
@@ -72,9 +72,9 @@ func _on_boarden_died() -> void:
 	dialogue.play_lines([
 		{"speaker": "Boarden", "text": "[i]He… will not be pleased…[/i]"},
 		{"speaker": "Narrator", "text": "The Boarden crashes down. His [color=#9ad0ff]Battle-axe[/color] clatters free — take it."},
-		{"speaker": "Old Fly", "text": "The castle opens now. That is not the same as freedom."},
+		{"speaker": "You", "text": "[i]The castle opens now. That isn't the same as freedom.[/i]"},
 		{"speaker": "You", "text": "[i]I am getting closer to something I shouldn't be able to reach.[/i]"},
-		{"speaker": "Old Fly", "text": "If you see him… don't mistake height for power."},
+		{"speaker": "You", "text": "[i]If I see him… I can't mistake height for power.[/i]"},
 		{"speaker": "You", "text": "[i]So this is what stole the sky.[/i]"},
 		{"speaker": "Flying Pig", "text": "You made it all the way here. That alone is impressive."},
 		{"speaker": "Flying Pig", "text": "Most never make it past what I built."},
@@ -98,14 +98,14 @@ func _on_pig_died() -> void:
 		{"speaker": "Flying Pig", "text": "[i]Why won't it hold together…[/i]"},
 		{"speaker": "Flying Pig", "text": "[i]I almost had it… just once…[/i]"},
 		{"speaker": "Narrator", "text": "What was taken did not return as it was. It returned as something new."},
-		{"speaker": "Old Fly", "text": "We don't belong to the ground anymore. Not again."},
+		{"speaker": "You", "text": "[i]We don't belong to the ground anymore. Not again.[/i]"},
 		{"speaker": "You", "text": "[i]The sky was never stolen. It was just waiting to be remembered.[/i]"},
 		{"speaker": "Narrator", "text": "And so… they flew."},
 	])
 
 func _on_ending_done() -> void:
-	victory_label.visible = true
-	get_tree().paused = true
+	# roll the ending cutscene: the fly reclaims its wings, the Pig detonates, THE END
+	get_tree().change_scene_to_file("res://scenes/ending_cutscene.tscn")
 
 func _open_gate(gate: StaticBody2D) -> void:
 	gate.visible = false
