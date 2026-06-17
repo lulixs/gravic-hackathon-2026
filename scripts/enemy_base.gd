@@ -125,6 +125,13 @@ func _spawn_damage_number(amount: float) -> void:
 	dn.global_position = global_position + Vector2(0, health_bar_offset_y - 6.0)
 
 func die() -> void:
+	_drop_loot()
+	died.emit()
+	queue_free()
+
+# split out so subclasses (e.g. a boss with a death animation) can drop loot,
+# emit died, then free themselves only after the animation finishes.
+func _drop_loot() -> void:
 	if XP_ORB:
 		var orb = XP_ORB.instantiate()
 		orb.global_position = global_position
@@ -133,8 +140,6 @@ func die() -> void:
 		var heart = HEALTH_ORB.instantiate()
 		heart.global_position = global_position
 		get_parent().add_child(heart)
-	died.emit()
-	queue_free()
 
 # Continuous contact damage: while the player overlaps our hitbox we keep calling
 # take_damage. The player's own i-frames rate-limit it, so brushing a spider chips
