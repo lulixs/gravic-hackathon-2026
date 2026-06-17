@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://b3boa00000001"]
+
+[ext_resource type="Script" path="res://scripts/boar_warden.gd" id="1_boa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(54, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(56, 42)
+
+[node name="BoarWarden" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_boa")
+
+[node name="Sprite" type="ColorRect" parent="."]
+offset_left = -29.0
+offset_top = -22.0
+offset_right = 29.0
+offset_bottom = 22.0
+color = Color(0.3, 0.22, 0.18, 1)
+
+[node name="Snout" type="ColorRect" parent="."]
+offset_left = 18.0
+offset_top = -8.0
+offset_right = 34.0
+offset_bottom = 8.0
+color = Color(0.42, 0.32, 0.26, 1)
+
+[node name="Tusk1" type="ColorRect" parent="."]
+offset_left = 30.0
+offset_top = -10.0
+offset_right = 40.0
+offset_bottom = -6.0
+color = Color(0.92, 0.9, 0.82, 1)
+
+[node name="Tusk2" type="ColorRect" parent="."]
+offset_left = 30.0
+offset_top = 6.0
+offset_right = 40.0
+offset_bottom = 10.0
+color = Color(0.92, 0.9, 0.82, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1
+
+[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_hit")

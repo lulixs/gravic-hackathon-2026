@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://b3wbrd0000001"]
+
+[ext_resource type="Script" path="res://scripts/weapon_resource.gd" id="1_wr"]
+
+[resource]
+script = ExtResource("1_wr")
+id = "broadsword"
+display_name = "Broadsword"
+damage_multiplier = 2.5
+stamina_jab = 14.0
+stamina_slash = 26.0
