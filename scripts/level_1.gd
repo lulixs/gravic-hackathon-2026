@@ -1,78 +1,119 @@
 extends Node2D
 
-# Level 1 — Basement (built on env.tscn's 3-room tilemap + room camera).
-# Flow: Room A spiders -> Room B egg sacs -> Room C pipe puzzle gate -> Broodmother
-# boss in the lower arena -> Flatsword drop -> done. No GameManager.reset(): the
-# Dagger, XP and upgrades all carry over from the tutorial.
+## Room-based camera controller for the basement.
+##
+## Each room is an Area2D child of this node whose CollisionPolygon2D describes
+## the room's extent. The player's Camera2D follows the player but is clamped to
+## the bounds of whichever room the player is currently in. Walking into a new
+## room fades the screen to black, snaps the camera limits to the new room, then
+## fades back in.
 
-@onready var puzzle = $PipePuzzle
-@onready var gate: StaticBody2D = $Gate
-@onready var flatsword: Area2D = $FlatswordPickup
-@onready var complete_label: CanvasLayer = $CompleteLabel
-@onready var dialogue = $DialogueBox
+## Duration (seconds) of each half of the fade (out, then in).
+const FADE_TIME := 0.25
 
-var sacks_total := 0
-var sacks_dead := 0
-var sacks_cleared := false
-var puzzle_solved := false
-var gate_open := false
-var weapon_collected := false
+@onready var player: CharacterBody2D = $CharacterBody2D
+@onready var camera: Camera2D = $CharacterBody2D/Camera2D
+
+var _fade_rect: ColorRect
+var _current_room: Area2D
+var _tween: Tween
+
 
 func _ready() -> void:
-	flatsword.visible = false
-	flatsword.monitoring = false
-	complete_label.visible = false
+	_build_fade_overlay()
 
-	for s in get_tree().get_nodes_in_group("sack"):
-		sacks_total += 1
-		s.died.connect(_on_sack_died)
-	for b in get_tree().get_nodes_in_group("boss"):
-		b.died.connect(_on_boss_died)
-	puzzle.solved.connect(_on_puzzle_solved)
-	flatsword.collected.connect(_on_weapon_collected)
+	for room in _get_rooms():
+		room.body_entered.connect(_on_room_body_entered.bind(room))
 
-	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "The Basement. The air is thick with the smell of old eggs."},
-		{"speaker": "Narrator", "text": "Down the [color=#cfcfe6]lower chamber[/color], burst the egg sacs before they flood the place."},
-		{"speaker": "Narrator", "text": "Then the rusted pipes to the east must be turned — all pointing up — to open the brood gate."},
-	])
+	_connect_ramp()
 
-func _on_sack_died() -> void:
-	sacks_dead += 1
-	if sacks_dead >= sacks_total and not sacks_cleared:
-		sacks_cleared = true
-		dialogue.play_lines([
-			{"speaker": "Narrator", "text": "The sacs are burst. Now the [color=#ffe08a]pipes[/color] in the east chamber — turn them all upright."},
-		])
-		_try_open_gate()
+	# Snap straight to whichever room the player starts in (no fade).
+	var start := _room_containing(player.global_position)
+	if start == null and not _get_rooms().is_empty():
+		start = _get_rooms()[0]
+	if start:
+		_current_room = start
+		_apply_room_limits(start)
 
-func _on_puzzle_solved() -> void:
-	puzzle_solved = true
-	_try_open_gate()
 
-func _try_open_gate() -> void:
-	if gate_open or not (sacks_cleared and puzzle_solved):
+## Every Area2D child is treated as a room, except the ramp (handled separately).
+func _get_rooms() -> Array:
+	var rooms: Array = []
+	for child in get_children():
+		if child is Area2D and child.name != "ramp" and child.has_node("CollisionPolygon2D"):
+			rooms.append(child)
+	return rooms
+
+
+## The ramp is not a room: it just toggles the player's on_ramp flag so the
+## player script can apply the slope drift while standing on it.
+func _connect_ramp() -> void:
+	var ramp := get_node_or_null("ramp")
+	if ramp == null:
 		return
-	gate_open = true
-	gate.visible = false
-	for c in gate.get_children():
-		if c is CollisionShape2D:
-			c.set_deferred("disabled", true)
-	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "The brood gate grinds open. The [color=#ff6a6a]Broodmother[/color] waits below. Finish her."},
-	])
+	ramp.body_entered.connect(func(body): if body == player: player.on_ramp = true)
+	ramp.body_exited.connect(func(body): if body == player: player.on_ramp = false)
 
-func _on_boss_died() -> void:
-	flatsword.visible = true
-	flatsword.monitoring = true
-	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "The Broodmother shrieks and falls. A [color=#9ad0ff]Flatsword[/color] gleams in the gore — take it."},
-	])
 
-func _on_weapon_collected(_id: String) -> void:
-	if weapon_collected:
+func _build_fade_overlay() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 100
+	add_child(layer)
+
+	_fade_rect = ColorRect.new()
+	_fade_rect.color = Color.BLACK
+	_fade_rect.anchor_right = 1.0
+	_fade_rect.anchor_bottom = 1.0
+	_fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_fade_rect.modulate.a = 0.0
+	layer.add_child(_fade_rect)
+
+
+## World-space bounding box of a room's collision polygon.
+func _room_bounds(room: Area2D) -> Rect2:
+	var poly := room.get_node("CollisionPolygon2D") as CollisionPolygon2D
+	var points := poly.polygon
+	var xform := poly.global_transform
+	var rect := Rect2(xform * points[0], Vector2.ZERO)
+	for i in range(1, points.size()):
+		rect = rect.expand(xform * points[i])
+	return rect
+
+
+func _room_containing(point: Vector2) -> Area2D:
+	for room in _get_rooms():
+		if _room_bounds(room).has_point(point):
+			return room
+	return null
+
+
+func _apply_room_limits(room: Area2D) -> void:
+	var b := _room_bounds(room)
+	camera.limit_left = int(b.position.x)
+	camera.limit_top = int(b.position.y)
+	camera.limit_right = int(b.position.x + b.size.x)
+	camera.limit_bottom = int(b.position.y + b.size.y)
+	# Jump the camera to its clamped target instead of sliding there.
+	camera.reset_smoothing()
+
+
+func _on_room_body_entered(body: Node, room: Area2D) -> void:
+	if body != player:
 		return
-	weapon_collected = true
-	# Flatsword in hand — descend out of the basement into the Garden
-	await get_tree().create_timer(0.6).timeout
-	get_tree().change_scene_to_file("res://levels/level_2_garden.tscn")
+	if room == _current_room:
+		return
+	_start_transition(room)
+
+
+func _start_transition(room: Area2D) -> void:
+	# Claim the target room immediately so repeated/overlapping entry signals
+	# from the same room are ignored while the fade plays.
+	_current_room = room
+
+	if _tween and _tween.is_valid():
+		_tween.kill()
+
+	_tween = create_tween()
+	_tween.tween_property(_fade_rect, "modulate:a", 1.0, FADE_TIME)
+	_tween.tween_callback(_apply_room_limits.bind(room))
+	_tween.tween_property(_fade_rect, "modulate:a", 0.0, FADE_TIME)
