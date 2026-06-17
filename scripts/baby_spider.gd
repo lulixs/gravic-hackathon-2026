@@ -2,7 +2,7 @@ extends EnemyBase
 
 @export var docile := false
 @export var move_speed := 50.0     # idle wander speed
-@export var chase_speed := 170.0   # speed when hunting the player (was tied to move_speed)
+@export var chase_speed := 140.0   # speed when hunting the player (was tied to move_speed)
 @export var chase_radius := 150.0
 @export var wander_change_interval := 2.0
 @export var target_height := 56.0   # on-screen height of the spider in pixels
@@ -76,7 +76,7 @@ func _physics_process(delta: float) -> void:
 		_wander_timer -= delta
 		if _wander_timer <= 0.0:
 			_pick_wander_dir()
-		target_vel = _wander_dir * move_speed * 0.6
+		target_vel = _wander_dir * move_speed * 0.6 * cobweb_factor()
 	else:
 		# room-based aggro: if you're in this spider's room, it hunts you anywhere in it
 		if player_in_same_room():
@@ -85,7 +85,7 @@ func _physics_process(delta: float) -> void:
 			_wander_timer -= delta
 			if _wander_timer <= 0.0:
 				_pick_wander_dir()
-			target_vel = _wander_dir * move_speed * 0.6
+			target_vel = _wander_dir * move_speed * 0.6 * cobweb_factor()
 
 	velocity = velocity.move_toward(target_vel, 600.0 * delta)
 	move_and_slide()

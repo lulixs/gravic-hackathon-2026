@@ -6,7 +6,7 @@ signal died
 @export var max_hp := 30.0
 @export var contact_damage := 10.0
 @export var xp_value := 25
-@export var health_drop_chance := 0.2
+@export var health_drop_chance := 0.5
 @export var i_frame_duration := 0.3
 @export var health_bar_width := 30.0
 @export var health_bar_offset_y := -22.0
@@ -23,6 +23,7 @@ var _i_timer := 0.0
 var _blink_accum := 0.0
 var _kb_timer := 0.0
 var _player_excepted := false
+var _cobweb_count := 0   # how many cobwebs we're currently standing in
 var _hitbox: Area2D
 var _sprite: Node  # Node2D or ColorRect — anything with modulate
 var _hb_bg: ColorRect
@@ -102,7 +103,18 @@ func chase_velocity_to(player_pos: Vector2, speed: float) -> Vector2:
 		return Vector2.ZERO
 	var dir := to / d
 	var err := d - chase_standoff   # >0 too far (approach), <0 too close (back off)
-	return dir * clampf(err * 6.0, -speed * 0.6, speed)
+	return dir * clampf(err * 6.0, -speed * 0.6, speed) * cobweb_factor()
+
+# Cobwebs (cobweb.gd) call enter/exit as enemies walk in and out. While webbed,
+# movement is crushed to ~12% — the same massive drag the player feels.
+func cobweb_factor() -> float:
+	return 0.12 if _cobweb_count > 0 else 1.0
+
+func enter_cobweb() -> void:
+	_cobweb_count += 1
+
+func exit_cobweb() -> void:
+	_cobweb_count = max(_cobweb_count - 1, 0)
 
 # ---------------- health bar ----------------
 

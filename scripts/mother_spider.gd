@@ -9,7 +9,7 @@ const WEB := preload("res://scenes/web_projectile.tscn")
 @export var move_speed := 34.0
 @export var sack_interval := 7.0
 @export var web_interval := 4.0
-@export var max_sacks := 2
+@export var max_sacks := 1   # never more than one of her egg sacs alive at a time
 @export var engage_radius := 420.0  # only wakes once the player is in her chamber AND near
 
 var _player: Node2D
@@ -70,6 +70,8 @@ func _plant_sack() -> void:
 	get_parent().add_child(s)
 	s.global_position = global_position + Vector2(randf_range(-70, 70), randf_range(-50, 50))
 	_sacks += 1
+	# free the slot when this sac is destroyed so she can plant a fresh one (but only one)
+	s.died.connect(func() -> void: _sacks = max(_sacks - 1, 0))
 
 func _spit_web() -> void:
 	var w := WEB.instantiate()
