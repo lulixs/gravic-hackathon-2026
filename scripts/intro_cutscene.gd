@@ -7,7 +7,7 @@ extends Node2D
 #
 # SPACE / click / attack / interact = advance.  ESC = skip to the game.
 
-const NEXT_SCENE := "res://levels/level_0_tutorial.tscn"
+const NEXT_SCENE := "res://levels/level_1_basement.tscn"
 
 # boss idle frame sources
 const PIG_FMT   := "res://assets/BigPig/Idle/pig_%04d.png"
@@ -97,12 +97,12 @@ func _build() -> void:
 	_stage = Node2D.new()
 	add_child(_stage)
 
-	# bosses — kept in the upper ~two thirds so the dialogue panel (top at _H-200)
-	# never overlaps them
-	_pig  = _spawn_boss(PIG_FMT, 0, 5, 7.0, _H * 0.38, Vector2(_W * 0.5, _H * 0.26), 0)
-	_mom  = _spawn_boss(MOM_FMT, 0, 11, 9.0, _H * 0.21, Vector2(_W * 0.20, _H * 0.54), 2)
-	_boar = _spawn_boss(BOAR_FMT, 0, 8, 8.0, _H * 0.23, Vector2(_W * 0.50, _H * 0.55), 2)
-	_frog = _spawn_boss(FROG_FMT, 1, 8, 8.0, _H * 0.21, Vector2(_W * 0.80, _H * 0.54), 2)
+	# bosses — sized/placed as fractions of the viewport so they sit in the upper
+	# ~two thirds and clear the dialogue panel (top ≈ _H*0.66) at any resolution
+	_pig  = _spawn_boss(PIG_FMT, 0, 5, 7.0, _H * 0.34, Vector2(_W * 0.5, _H * 0.27), 0)
+	_mom  = _spawn_boss(MOM_FMT, 0, 11, 9.0, _H * 0.16, Vector2(_W * 0.20, _H * 0.53), 2)
+	_boar = _spawn_boss(BOAR_FMT, 0, 8, 8.0, _H * 0.18, Vector2(_W * 0.50, _H * 0.53), 2)
+	_frog = _spawn_boss(FROG_FMT, 1, 8, 8.0, _H * 0.16, Vector2(_W * 0.80, _H * 0.53), 2)
 
 	# UI overlay
 	var ui := CanvasLayer.new()
@@ -127,9 +127,9 @@ func _build() -> void:
 	_narr.scroll_active = false
 	_narr.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_narr.custom_minimum_size = Vector2(_W * 0.7, 0)
-	_narr.size = Vector2(_W * 0.7, 120)
-	_narr.position = Vector2(_W * 0.15, _H * 0.40)
-	_narr.add_theme_font_size_override("normal_font_size", 30)
+	_narr.size = Vector2(_W * 0.7, _H * 0.3)
+	_narr.position = Vector2(_W * 0.15, _H * 0.34)
+	_narr.add_theme_font_size_override("normal_font_size", int(_H * 0.07))
 	_narr.add_theme_color_override("default_color", C_NARR)
 	_narr.modulate.a = 0.0
 	ui.add_child(_narr)
@@ -146,27 +146,27 @@ func _build() -> void:
 	sb.content_margin_top = 14
 	sb.content_margin_bottom = 12
 	_panel.add_theme_stylebox_override("panel", sb)
-	_panel.position = Vector2(60, _H - 200)
-	_panel.size = Vector2(_W - 120, 150)
+	_panel.position = Vector2(_W * 0.05, _H * 0.66)
+	_panel.size = Vector2(_W * 0.90, _H * 0.24)
 	_panel.modulate.a = 0.0
 	ui.add_child(_panel)
 	var vb := VBoxContainer.new()
 	vb.add_theme_constant_override("separation", 6)
 	_panel.add_child(vb)
 	_speaker = Label.new()
-	_speaker.add_theme_font_size_override("font_size", 22)
+	_speaker.add_theme_font_size_override("font_size", int(_H * 0.052))
 	vb.add_child(_speaker)
 	_body = RichTextLabel.new()
 	_body.bbcode_enabled = true
 	_body.fit_content = true
 	_body.scroll_active = false
-	_body.custom_minimum_size = Vector2(0, 86)
-	_body.add_theme_font_size_override("normal_font_size", 20)
+	_body.custom_minimum_size = Vector2(0, _H * 0.13)
+	_body.add_theme_font_size_override("normal_font_size", int(_H * 0.046))
 	vb.add_child(_body)
 	_hint = Label.new()
 	_hint.text = "▾ SPACE   •   ESC to skip"
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	_hint.add_theme_font_size_override("font_size", 12)
+	_hint.add_theme_font_size_override("font_size", int(_H * 0.03))
 	_hint.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	vb.add_child(_hint)
 

@@ -5,12 +5,9 @@ signal collected(weapon_id: String)
 @export var weapon_id: String = "dagger"
 @export var display_name: String = "Dagger"
 
-@onready var label: Label = $Label
 @onready var sprite: Sprite2D = $Sprite
 
 func _ready() -> void:
-	if label:
-		label.text = display_name
 	_load_icon()
 	body_entered.connect(_on_body_entered)
 

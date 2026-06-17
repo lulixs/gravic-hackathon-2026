@@ -137,7 +137,7 @@ func _build() -> void:
 	_narr.custom_minimum_size = Vector2(_W * 0.7, 0)
 	_narr.size = Vector2(_W * 0.7, 120)
 	_narr.position = Vector2(_W * 0.15, _H * 0.18)
-	_narr.add_theme_font_size_override("normal_font_size", 28)
+	_narr.add_theme_font_size_override("normal_font_size", int(_H * 0.07))
 	_narr.add_theme_color_override("default_color", Color(0.15, 0.12, 0.1))
 	_narr.modulate.a = 0.0
 	ui.add_child(_narr)
@@ -147,10 +147,10 @@ func _build() -> void:
 	_end_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_end_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_end_label.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_end_label.add_theme_font_size_override("font_size", 96)
+	_end_label.add_theme_font_size_override("font_size", int(_H * 0.18))
 	_end_label.add_theme_color_override("font_color", Color(1, 1, 1))
 	_end_label.add_theme_color_override("font_outline_color", Color(0.2, 0, 0))
-	_end_label.add_theme_constant_override("outline_size", 8)
+	_end_label.add_theme_constant_override("outline_size", maxi(2, int(_H * 0.02)))
 	_end_label.modulate.a = 0.0
 	ui.add_child(_end_label)
 
@@ -158,8 +158,8 @@ func _build() -> void:
 	_prompt.text = "SPACE — play again        ESC — quit"
 	_prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_prompt.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	_prompt.position.y = _H - 60
-	_prompt.add_theme_font_size_override("font_size", 18)
+	_prompt.position.y = _H - _H * 0.12
+	_prompt.add_theme_font_size_override("font_size", int(_H * 0.04))
 	_prompt.add_theme_color_override("font_color", Color(1, 0.85, 0.85))
 	_prompt.modulate.a = 0.0
 	ui.add_child(_prompt)

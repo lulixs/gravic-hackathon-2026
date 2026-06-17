@@ -5,10 +5,11 @@ extends CanvasLayer
 # later, delete the LevelSelect autoload line in project.godot (and this script).
 
 const LEVELS := [
-	{"name": "0 · Tutorial", "path": "res://levels/level_0_tutorial.tscn"},
+	{"name": "Intro · Cutscene", "path": "res://scenes/intro_cutscene.tscn"},
 	{"name": "1 · Basement", "path": "res://levels/level_1_basement.tscn"},
 	{"name": "2 · Garden", "path": "res://levels/level_2_garden.tscn"},
 	{"name": "3 · Castle", "path": "res://levels/level_3_castle.tscn"},
+	{"name": "End · Cutscene", "path": "res://scenes/ending_cutscene.tscn"},
 ]
 
 var _panel: PanelContainer
