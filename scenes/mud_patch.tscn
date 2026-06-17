@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/mud_patch.gd" id="1_mud"]
+
+[sub_resource type="RectangleShape2D" id="shape"]
+size = Vector2(96, 96)
+
+[node name="MudPatch" type="Area2D"]
+script = ExtResource("1_mud")
+
+[node name="Sprite" type="ColorRect" parent="."]
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+color = Color(0.32, 0.24, 0.14, 0.7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("shape")

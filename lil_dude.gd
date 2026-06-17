@@ -22,6 +22,7 @@ var last_dir := Vector2.DOWN
 # status flags
 var i_frames := false
 var cobwebbed := false
+var muddy := false
 var charging := false
 
 # state timers
@@ -84,6 +85,8 @@ func walk(delta: float) -> void:
 	var mult := 1.0
 	if cobwebbed:
 		mult = 0.1
+	elif muddy:
+		mult = 0.4
 	elif charging:
 		mult = 0.5
 	velocity = velocity.move_toward(dir * MAX_SPEED * mult, ACCELERATION * delta)

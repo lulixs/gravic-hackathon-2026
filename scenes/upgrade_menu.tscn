@@ -26,7 +26,7 @@ theme_override_constants/separation = 4
 [node name="Title" type="Label" parent="Panel/Center/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 17
-text = "STATUS & INVENTORY"
+text = "UPGRADES"
 horizontal_alignment = 1
 
 [node name="HPStat" type="Label" parent="Panel/Center/VBox"]
