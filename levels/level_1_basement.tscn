@@ -2,7 +2,18 @@
 
 [ext_resource type="Texture2D" uid="uid://c8ccrp21alesw" path="res://assets/basement.png" id="1_c3k1h"]
 [ext_resource type="PackedScene" uid="uid://dh1m5jqolwygd" path="res://lil_dude.tscn" id="1_nhbfn"]
+[ext_resource type="PackedScene" uid="uid://b3dlg00000001" path="res://scenes/dialogue_box.tscn" id="2_dlg"]
+[ext_resource type="PackedScene" uid="uid://b3tut00000001" path="res://scenes/tutorial_prompt.tscn" id="3_tut"]
+[ext_resource type="PackedScene" uid="uid://b3hud00000001" path="res://scenes/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" uid="uid://b3upg00000001" path="res://scenes/upgrade_menu.tscn" id="5_upg"]
+[ext_resource type="PackedScene" uid="uid://b3spi00000001" path="res://scenes/baby_spider.tscn" id="6_spi"]
+[ext_resource type="PackedScene" uid="uid://b3wpk00000001" path="res://scenes/weapon_pickup.tscn" id="7_wpk"]
+[ext_resource type="PackedScene" path="res://scenes/key_pickup.tscn" id="8_key"]
+[ext_resource type="Texture2D" uid="uid://bey8oydkbyxp1" path="res://assets/items.png" id="9_items"]
 [ext_resource type="Script" uid="uid://ci7r06ho1jx4i" path="res://scripts/level_1.gd" id="10_l1"]
+[ext_resource type="PackedScene" uid="uid://b3sak00000001" path="res://scenes/spider_sack.tscn" id="11_sak"]
+[ext_resource type="PackedScene" uid="uid://b3mom00000001" path="res://scenes/mother_spider.tscn" id="12_mom"]
+[ext_resource type="Script" path="res://scripts/dash_wall.gd" id="13_dash"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s2qgw"]
 texture = ExtResource("1_c3k1h")
@@ -115,6 +126,15 @@ terrain_set_0/terrain_0/color = Color(0.24659258, 0.44859326, 4.813075e-07, 1)
 terrain_set_1/mode = 0
 sources/0 = SubResource("TileSetAtlasSource_s2qgw")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(32, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bossgate"]
+size = Vector2(24, 384)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g7j2m"]
+size = Vector2(96, 314)
+
 [node name="Node2D" type="Node2D" unique_id=1946653483]
 script = ExtResource("10_l1")
 
@@ -153,10 +173,11 @@ polygon = PackedVector2Array(1312, 320, 1952, 320, 1952, -160, 1312, -160)
 visible = false
 polygon = PackedVector2Array(1952, -160, 1952, 320, 2496, 320, 2496, -160)
 
-[node name="Area2D" type="Area2D" parent="." unique_id=383569721]
+[node name="room4" type="Area2D" parent="." unique_id=383569721]
+position = Vector2(2098.7031, 589.4829)
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D" unique_id=1737274415]
-visible = false
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="room4" unique_id=1737274415]
+position = Vector2(-2098.7031, -589.4829)
 polygon = PackedVector2Array(2176, 896, 2720, 896, 2720, 320, 2176, 320)
 
 [node name="Area2D2" type="Area2D" parent="." unique_id=1793190719]
@@ -174,13 +195,118 @@ polygon = PackedVector2Array(3168, 320, 3168, 896, 3776, 896, 3776, 256, 3168, 2
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1260225327]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1208697963]
-visible = false
-polygon = PackedVector2Array(192, 64, 192, 288, 448, 288, 448, 192, 672, 192, 672, 288, 1280, 288, 1280, 192, 1344, 192, 1344, 288, 1472, 288, 1472, 192, 1536, 192, 1536, 288, 1600, 288, 1600, 192, 1664, 192, 1664, 288, 1728, 288, 1728, 192, 1792, 192, 1792, 288, 1920, 288, 1920, 192, 1984, 192, 1984, 288, 2432, 288, 2432, 448, 2208, 448, 2208, 864, 2688, 864, 2688, 640, 3200, 640, 3200, 800, 3744, 800, 3744, 320, 3200, 320, 3200, 576, 2688, 576, 2688, 448, 2464, 448, 2464, -160, 2464, -32, 2176, -32, 2048, 32, 1984, 32, 1984, 128, 1920, 128, 1920, 32, 1792, 32, 1792, 128, 1728, 128, 1728, 32, 1664, 32, 1664, 128, 1600, 128, 1600, 40, 1600, 32, 1536, 32, 1536, 128, 1472, 128, 1472, 32, 1344, 32, 1344, 128, 1280, 128, 1280, 32, 672, 32, 672, 128, 448, 128, 448, 64, 192, 64, 528, -240, 2016, -256, 3160, -280, 3888, 152, 3976, 552, 3952, 1192, 3272, 1208, 2424, 1064, 2064, 776, 1936, 576, 1232, 496, 384, 488, 48, 488, 136, 88, 168, 64, 184, 56)
+polygon = PackedVector2Array(192, 64, 192, 288, 448, 288, 448, 192, 672, 192, 672, 288, 1280, 288, 1280, 192, 1344, 192, 1344, 288, 1472, 288, 1472, 192, 1536, 192, 1536, 288, 1600, 288, 1600, 192, 1664, 192, 1664, 288, 1728, 288, 1728, 192, 1792, 192, 1792, 288, 1920, 288, 1920, 192, 1984, 192, 1984, 288, 2432, 288, 2432, 448, 2208, 448, 2208, 864, 2688, 864, 2688, 640, 3200, 640, 3200, 800, 3744, 800, 3744, 448, 3200, 448, 3200, 576, 2688, 576, 2688, 448, 2464, 448, 2464, -160, 2464, -32, 2176, -32, 2048, 32, 1984, 32, 1984, 128, 1920, 128, 1920, 32, 1792, 32, 1792, 128, 1728, 128, 1728, 32, 1664, 32, 1664, 128, 1600, 128, 1600, 40, 1600, 32, 1536, 32, 1536, 128, 1472, 128, 1472, 32, 1344, 32, 1344, 128, 1280, 128, 1280, 32, 672, 32, 672, 128, 448, 128, 448, 64, 192, 64, 528, -240, 2016, -256, 3160, -280, 3888, 152, 3976, 552, 3952, 1192, 3272, 1208, 2424, 1064, 2064, 776, 1936, 576, 1232, 496, 384, 488, 48, 488, 136, 88, 168, 64, 184, 56)
 
 [node name="CollisionPolygon2D2" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=768939159]
-polygon = PackedVector2Array(2048, 64, 2208, 64, 2208, 0, 2176, 0)
+polygon = PackedVector2Array(2048, 64, 2208, 64, 2208, 32, 2304, 32, 2304, 0, 2208, 0, 2176, 0)
+
+[node name="CollisionPolygon2D3" type="CollisionPolygon2D" parent="StaticBody2D" unique_id=1109711998]
+polygon = PackedVector2Array(2432, 288, 2432, 0, 2304, 0, 2304, 64, 2424, 64, 2424, 288)
 
 [node name="ramp" type="Area2D" parent="." unique_id=278295637]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ramp" unique_id=1681960505]
 polygon = PackedVector2Array(2048, 32, 2048, 64, 2176, 0, 2176, -32)
+
+[node name="HUD" parent="." unique_id=1446471078 instance=ExtResource("4_hud")]
+
+[node name="UpgradeMenu" parent="." unique_id=2069664599 instance=ExtResource("5_upg")]
+
+[node name="DialogueBox" parent="." unique_id=386381102 instance=ExtResource("2_dlg")]
+
+[node name="TutorialPrompt" parent="." unique_id=1137058815 instance=ExtResource("3_tut")]
+
+[node name="Spider1" parent="." unique_id=2046745019 instance=ExtResource("6_spi")]
+position = Vector2(820, 152)
+docile = true
+
+[node name="Spider2" parent="." unique_id=2095282307 instance=ExtResource("6_spi")]
+position = Vector2(1000, 152)
+docile = true
+
+[node name="Spider3" parent="." unique_id=2016698394 instance=ExtResource("6_spi")]
+position = Vector2(1180, 152)
+docile = true
+
+[node name="DaggerPickup" parent="." unique_id=1565345414 instance=ExtResource("7_wpk")]
+position = Vector2(960, 152)
+
+[node name="KeyPickup" parent="." unique_id=320495415 instance=ExtResource("8_key")]
+position = Vector2(1060, 152)
+
+[node name="Door" type="StaticBody2D" parent="." unique_id=1320641433]
+position = Vector2(1296, 160)
+
+[node name="Visual" type="Sprite2D" parent="Door" unique_id=127133896]
+texture = ExtResource("9_items")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door" unique_id=100934830]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Spider4" parent="." unique_id=1072704364 instance=ExtResource("6_spi")]
+position = Vector2(1430, 152)
+
+[node name="Spider5" parent="." unique_id=84997044 instance=ExtResource("6_spi")]
+position = Vector2(1580, 152)
+
+[node name="Spider6" parent="." unique_id=354704795 instance=ExtResource("6_spi")]
+position = Vector2(1730, 152)
+
+[node name="Spider7" parent="." unique_id=463817855 instance=ExtResource("6_spi")]
+position = Vector2(1860, 152)
+
+[node name="EggSac1" parent="." unique_id=164269725 instance=ExtResource("11_sak")]
+position = Vector2(2350, 800)
+
+[node name="EggSac2" parent="." unique_id=934399869 instance=ExtResource("11_sak")]
+position = Vector2(2550, 800)
+
+[node name="Guard1" parent="." unique_id=666351080 instance=ExtResource("6_spi")]
+position = Vector2(2450, 760)
+
+[node name="Guard2" parent="." unique_id=539779218 instance=ExtResource("6_spi")]
+position = Vector2(2620, 800)
+
+[node name="Key2Pickup" parent="." unique_id=346089246 instance=ExtResource("8_key")]
+position = Vector2(2450, 800)
+
+[node name="Door2" type="StaticBody2D" parent="." unique_id=1046516546]
+position = Vector2(2704, 608)
+
+[node name="Visual" type="Sprite2D" parent="Door2" unique_id=314829232]
+texture = ExtResource("9_items")
+region_enabled = true
+region_rect = Rect2(32, 0, 32, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door2" unique_id=1673241392]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="Broodmother" parent="." unique_id=1550026591 instance=ExtResource("12_mom")]
+position = Vector2(3450, 740)
+
+[node name="FlatswordPickup" parent="." unique_id=1354166516 instance=ExtResource("7_wpk")]
+position = Vector2(3450, 760)
+weapon_id = "flatsword"
+display_name = "Flatsword"
+
+[node name="BossGate" type="StaticBody2D" parent="." unique_id=1395170780]
+position = Vector2(3168, 640)
+
+[node name="Visual" type="ColorRect" parent="BossGate" unique_id=1229116111]
+offset_left = -12.0
+offset_top = -192.0
+offset_right = 12.0
+offset_bottom = 192.0
+color = Color(0.15, 0.05, 0.18, 0.55)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BossGate" unique_id=249634913]
+shape = SubResource("RectangleShape2D_bossgate")
+
+[node name="dash_wall" type="StaticBody2D" parent="." unique_id=991690945]
+script = ExtResource("13_dash")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="dash_wall" unique_id=944773456]
+position = Vector2(2256, -144)
+shape = SubResource("RectangleShape2D_g7j2m")

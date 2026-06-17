@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://8t5j7qbkiu56" path="res://assets/fly.png" id="2_p3344"]
 [ext_resource type="Texture2D" uid="uid://c58cvrnb2hq53" path="res://assets/sword.png" id="3_sword"]
 [ext_resource type="Script" uid="uid://boqi2pkfrex2i" path="res://sword.gd" id="4_sword"]
+[ext_resource type="Script" uid="uid://d7khvtdtoorn" path="res://room_camera.gd" id="5_cam"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p3344"]
 radius = 8.5
@@ -197,3 +198,4 @@ parameters/idle/blend_position = -0.0005094409
 parameters/walk/blend_position = -0.0015282631
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2010450018]
+script = ExtResource("5_cam")

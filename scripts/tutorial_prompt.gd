@@ -23,6 +23,12 @@ func _ready() -> void:
 func hide_panel() -> void:
 	panel.visible = false
 
+## Permanently stop the tutorial: hide the panel and prevent it from re-showing.
+func dismiss() -> void:
+	_started = false
+	_index = _steps.size()
+	panel.visible = false
+
 func begin() -> void:
 	_started = true
 	_show_current()

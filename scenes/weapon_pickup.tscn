@@ -14,11 +14,3 @@ script = ExtResource("1_wpk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_wpk")
-
-[node name="Label" type="Label" parent="."]
-offset_left = -40.0
-offset_top = -36.0
-offset_right = 40.0
-offset_bottom = -18.0
-text = "Dagger"
-horizontal_alignment = 1

@@ -78,14 +78,13 @@ func _physics_process(delta: float) -> void:
 			_pick_wander_dir()
 		target_vel = _wander_dir * move_speed * 0.6 * cobweb_factor()
 	else:
-		# room-based aggro: if you're in this spider's room, it hunts you anywhere in it
+		# room-based aggro: if you're in this spider's room, it hunts you anywhere in it.
+		# Outside its room it stays put (no wandering) so it doesn't look "awake" before
+		# the player arrives.
 		if player_in_same_room():
 			target_vel = chase_velocity_to(_player.global_position, chase_speed)
 		else:
-			_wander_timer -= delta
-			if _wander_timer <= 0.0:
-				_pick_wander_dir()
-			target_vel = _wander_dir * move_speed * 0.6 * cobweb_factor()
+			target_vel = Vector2.ZERO
 
 	velocity = velocity.move_toward(target_vel, 600.0 * delta)
 	move_and_slide()

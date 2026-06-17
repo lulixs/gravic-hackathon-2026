@@ -221,6 +221,9 @@ func _level_rooms() -> Array:
 	var p := _player_node()
 	if p and p.has_node("Camera2D"):
 		var cam := p.get_node("Camera2D")
+		# Basement publishes its Area2D room rects here (room_camera-free levels).
+		if cam.has_meta("rooms"):
+			return cam.get_meta("rooms")
 		if "rooms" in cam:
 			return cam.rooms
 	return []

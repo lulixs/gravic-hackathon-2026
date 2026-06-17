@@ -116,6 +116,10 @@ func updateDir() -> void:
 
 # ---------------- DODGE ----------------
 
+## True while mid-dash. Used by dash-only walls to let the player phase through.
+func is_dashing() -> bool:
+	return state == DODGE
+
 func _try_dodge() -> void:
 	if i_frames:
 		return

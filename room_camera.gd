@@ -28,7 +28,7 @@ const DEFAULT_ROOMS := [
 
 @export var fade_time := 0.35
 
-var rooms: Array = DEFAULT_ROOMS
+var rooms: Array = []
 var _player: Node2D
 var _current := 0
 var _transitioning := false
@@ -38,6 +38,10 @@ var _fade: ColorRect
 func _ready() -> void:
 	_player = get_parent()
 	position_smoothing_enabled = false
+	# Stay inert until a level calls setup(). The basement drives its own camera
+	# (level_1.gd) on this same node, so we must not clamp/fade unless configured.
+	if rooms.is_empty():
+		return
 	_make_fade_overlay()
 	_current = _room_at(_player.global_position)
 	_apply_room(_current, true)
@@ -48,6 +52,8 @@ func setup(room_list: Array) -> void:
 	rooms = room_list
 	if rooms.is_empty():
 		return
+	if _fade == null:
+		_make_fade_overlay()
 	_current = _room_at(_player.global_position if _player else global_position)
 	_apply_room(_current, true)
 
