@@ -47,6 +47,13 @@ theme_override_font_sizes/font_size = 11
 text = "Weapon: Stick"
 horizontal_alignment = 1
 
+[node name="WeaponDetail" type="Label" parent="Panel/Center/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.82, 0.95, 1)
+theme_override_font_sizes/font_size = 9
+text = "Sword: 10 dmg · 210 knockback · 15 stamina/swing"
+horizontal_alignment = 1
+
 [node name="DamageStat" type="Label" parent="Panel/Center/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 11

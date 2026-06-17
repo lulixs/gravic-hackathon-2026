@@ -22,6 +22,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
+	if knockback_active(delta):
+		return
 	if not _player:
 		_player = get_tree().get_first_node_in_group("player")
 	if _cooldown > 0.0:

@@ -17,6 +17,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
+	if knockback_active(delta):
+		return
 	velocity = velocity.move_toward(_dir * patrol_speed, 200.0 * delta)
 	move_and_slide()
 	if is_on_wall():

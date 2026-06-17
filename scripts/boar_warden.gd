@@ -31,6 +31,9 @@ func _ready() -> void:
 	health_drop_chance = 1.0
 	health_bar_width = 64.0
 	health_bar_offset_y = -36.0
+	knockback_resist = 0.9
+	chase_standoff = 30.0
+	contact_range = 48.0
 	super._ready()
 	add_to_group("boss")
 	_t = stalk_time
@@ -50,8 +53,7 @@ func _physics_process(delta: float) -> void:
 
 	match _state:
 		State.STALK:
-			var dir := (_player.global_position - global_position).normalized()
-			velocity = velocity.move_toward(dir * stalk_speed, 500.0 * delta)
+			velocity = velocity.move_toward(chase_velocity_to(_player.global_position, stalk_speed), 500.0 * delta)
 			move_and_slide()
 			_t -= delta
 			if _t <= 0.0:

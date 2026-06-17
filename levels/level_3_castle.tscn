@@ -177,6 +177,26 @@ position = Vector2(520, 180)
 [node name="RotatingHazard" parent="." instance=ExtResource("15_haz")]
 position = Vector2(400, 290)
 
+[node name="HazardA2" parent="." instance=ExtResource("15_haz")]
+position = Vector2(180, 400)
+spin_speed = -130.0
+
+[node name="HazardB1" parent="." instance=ExtResource("15_haz")]
+position = Vector2(300, 860)
+spin_speed = 125.0
+
+[node name="HazardB2" parent="." instance=ExtResource("15_haz")]
+position = Vector2(720, 1170)
+spin_speed = -105.0
+
+[node name="HazardC1" parent="." instance=ExtResource("15_haz")]
+position = Vector2(1250, 540)
+spin_speed = -140.0
+
+[node name="HazardC2" parent="." instance=ExtResource("15_haz")]
+position = Vector2(1600, 770)
+spin_speed = 115.0
+
 [node name="GateB" type="StaticBody2D" parent="."]
 position = Vector2(304, 600)
 

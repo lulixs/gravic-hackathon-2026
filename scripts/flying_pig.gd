@@ -36,6 +36,8 @@ func _ready() -> void:
 	health_drop_chance = 0.0
 	health_bar_width = 72.0
 	health_bar_offset_y = -44.0
+	knockback_resist = 0.9
+	contact_range = 46.0
 	super._ready()
 	add_to_group("boss")
 	_shoot_t = shoot_interval

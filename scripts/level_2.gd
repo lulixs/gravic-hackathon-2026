@@ -5,7 +5,7 @@ extends Node2D
 ## Carries the player's weapon / XP / HP over from the basement (no GameManager.reset()).
 
 const ROOM := Rect2(0, 0, 2400, 1500)
-const NEXT_LEVEL := ""  # Level 3 (Castle) is not built yet
+const NEXT_LEVEL := "res://levels/level_3_castle.tscn"
 
 @onready var gate: StaticBody2D = $Gate
 @onready var broadsword: Area2D = $BroadswordPickup

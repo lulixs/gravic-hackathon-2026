@@ -65,6 +65,9 @@ func _setup_sprite() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
+	if knockback_active(delta):
+		_update_facing()
+		return
 	if not _player:
 		_player = get_tree().get_first_node_in_group("player")
 
@@ -75,10 +78,9 @@ func _physics_process(delta: float) -> void:
 			_pick_wander_dir()
 		target_vel = _wander_dir * move_speed * 0.6
 	else:
-		var to_player: Vector2 = _player.global_position - global_position
 		# room-based aggro: if you're in this spider's room, it hunts you anywhere in it
 		if player_in_same_room():
-			target_vel = to_player.normalized() * chase_speed
+			target_vel = chase_velocity_to(_player.global_position, chase_speed)
 		else:
 			_wander_timer -= delta
 			if _wander_timer <= 0.0:

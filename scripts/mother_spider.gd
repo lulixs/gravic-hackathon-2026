@@ -26,6 +26,9 @@ func _ready() -> void:
 	health_drop_chance = 1.0
 	health_bar_width = 64.0
 	health_bar_offset_y = -38.0
+	knockback_resist = 0.82
+	chase_standoff = 34.0
+	contact_range = 46.0
 	super._ready()
 	add_to_group("boss")
 	_sack_t = sack_interval
@@ -33,6 +36,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
+	if knockback_active(delta):
+		return
 	if not _player:
 		_player = get_tree().get_first_node_in_group("player")
 	if not _player:
@@ -45,8 +50,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
-	var to_player: Vector2 = _player.global_position - global_position
-	velocity = velocity.move_toward(to_player.normalized() * move_speed, 400.0 * delta)
+	velocity = velocity.move_toward(chase_velocity_to(_player.global_position, move_speed), 400.0 * delta)
 	move_and_slide()
 
 	_sack_t -= delta

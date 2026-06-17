@@ -22,12 +22,14 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)   # i-frame blink + contact damage
+	if knockback_active(delta):
+		return
 	if not _player:
 		_player = get_tree().get_first_node_in_group("player")
 
 	var target := Vector2.ZERO
 	if _player and player_in_same_room():
-		target = (_player.global_position - global_position).normalized() * chase_speed
+		target = chase_velocity_to(_player.global_position, chase_speed)
 	else:
 		_wander_t -= delta
 		if _wander_t <= 0.0:

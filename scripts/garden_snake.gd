@@ -24,6 +24,9 @@ func _ready() -> void:
 	health_drop_chance = 1.0
 	health_bar_width = 72.0
 	health_bar_offset_y = -26.0
+	knockback_resist = 0.85
+	chase_standoff = 40.0
+	contact_range = 50.0
 	super._ready()
 	add_to_group("boss")
 	_lunge_cd = lunge_interval
@@ -46,8 +49,8 @@ func _physics_process(delta: float) -> void:
 		_lunge_t -= delta
 		velocity = _lunge_dir * lunge_speed
 	else:
+		velocity = velocity.move_toward(chase_velocity_to(_player.global_position, glide_speed), 300.0 * delta)
 		var to_player: Vector2 = _player.global_position - global_position
-		velocity = velocity.move_toward(to_player.normalized() * glide_speed, 300.0 * delta)
 		_lunge_cd -= delta
 		if _lunge_cd <= 0.0:
 			_lunge_cd = lunge_interval
