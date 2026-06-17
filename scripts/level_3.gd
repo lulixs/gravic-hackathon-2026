@@ -57,7 +57,7 @@ func _on_boarden_died() -> void:
 	broadsword.monitoring = true
 	_open_gate(gate_c)
 	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "The Boarden crashes down. His [color=#9ad0ff]Broadsword[/color] clatters free — take it."},
+		{"speaker": "Narrator", "text": "The Boarden crashes down. His [color=#9ad0ff]Battle-axe[/color] clatters free — take it."},
 		{"speaker": "Narrator", "text": "The throne room gate is open. The Pig is all that stands between you and the sky."},
 	])
 

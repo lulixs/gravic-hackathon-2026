@@ -9,3 +9,6 @@ display_name = "Broadsword"
 damage_multiplier = 3.0
 stamina_jab = 18.0
 stamina_slash = 30.0
+texture_path = "res://assets/Weapons/broadsword.png"
+display_length = 62.0
+hitbox_radius = 26.0

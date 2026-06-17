@@ -9,3 +9,6 @@ display_name = "Stick"
 damage_multiplier = 1.0
 stamina_jab = 15.0
 stamina_slash = 25.0
+texture_path = "res://assets/Weapons/stick.png"
+display_length = 46.0
+hitbox_radius = 18.0

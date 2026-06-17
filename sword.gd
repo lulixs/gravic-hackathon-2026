@@ -31,9 +31,14 @@ var hitbox: Area2D
 var hitbox_shape: CollisionShape2D
 var _hit_bodies: Array = []
 var _flash_accum := 0.0
+var _base_scale := Vector2.ONE   # the current weapon's resting scale
+var _weapon: WeaponResource = null
 
 func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR  # smooth the scaled-down weapon art
 	_create_hitbox()
+	GameManager.weapon_changed.connect(func(_id: String) -> void: _apply_weapon())
+	_apply_weapon()
 
 func _create_hitbox() -> void:
 	hitbox = Area2D.new()
@@ -123,7 +128,7 @@ func _process_attack(delta: float, dir: Vector2) -> void:
 				charge_time = 0.0
 				charging_changed.emit(false)
 				modulate = Color.WHITE
-				scale = Vector2.ONE
+				scale = _base_scale
 
 func _launch_attack(dir: Vector2) -> void:
 	var charge_ratio := clampf(charge_time / FULL_CHARGE_TIME, 0.0, 1.0)
@@ -147,25 +152,46 @@ func _update_charge_visual(delta: float) -> void:
 				# pulse bright red-orange at max charge so it's obvious
 				var pulse := 0.5 + 0.5 * sin(_flash_accum * 18.0)
 				modulate = Color(1.0, 0.4 + 0.4 * pulse, 0.2, 1.0)
-				scale = Vector2.ONE * (1.0 + 0.18 * pulse)
+				scale = _base_scale * (1.0 + 0.18 * pulse)
 			else:
 				# linear ramp toward red as charge builds
 				modulate = Color.WHITE.lerp(Color(1.0, 0.7, 0.2, 1.0), t)
-				scale = Vector2.ONE.lerp(Vector2.ONE * 1.1, t)
+				scale = _base_scale.lerp(_base_scale * 1.1, t)
 		SwordState.ATTACKING:
 			modulate = Color(1.0, 0.95, 0.85, 1.0)
 		_:
 			modulate = modulate.lerp(Color.WHITE, 1.0 - exp(-8.0 * delta))
-			scale = scale.lerp(Vector2.ONE, 1.0 - exp(-12.0 * delta))
+			scale = scale.lerp(_base_scale, 1.0 - exp(-12.0 * delta))
 
 func _weapon_damage() -> float:
-	var dmg := BASE_DAMAGE
+	var mult := 1.0
+	if _weapon and "damage_multiplier" in _weapon:
+		mult = _weapon.damage_multiplier
+	return BASE_DAMAGE * mult * GameManager.damage_mult
+
+# Swap the on-screen weapon — texture, resting scale, and hit reach — from its .tres.
+# Bigger weapons (broadsword, battle-axe) end up larger with a wider hitbox; smaller
+# ones (dagger) stay small with a tight hitbox.
+func _apply_weapon() -> void:
 	var path := "res://data/" + GameManager.current_weapon + ".tres"
-	if ResourceLoader.exists(path):
-		var res := ResourceLoader.load(path)
-		if res and "damage_multiplier" in res:
-			dmg = BASE_DAMAGE * float(res.damage_multiplier)
-	return dmg * GameManager.damage_mult
+	if not ResourceLoader.exists(path):
+		return
+	_weapon = ResourceLoader.load(path)
+	if _weapon == null:
+		return
+	if _weapon.texture_path != "" and ResourceLoader.exists(_weapon.texture_path):
+		var tex: Texture2D = load(_weapon.texture_path)
+		if tex:
+			texture = tex
+			var longest := float(maxi(tex.get_width(), tex.get_height()))
+			var s := _weapon.display_length / maxf(longest, 1.0)
+			_base_scale = Vector2(s, s)
+			scale = _base_scale
+	# the hitbox is a child of this (scaled) sprite, so divide by the scale to keep
+	# the reach in world pixels
+	if hitbox_shape and hitbox_shape.shape is CircleShape2D:
+		var s2: float = _base_scale.x if _base_scale.x > 0.0 else 1.0
+		(hitbox_shape.shape as CircleShape2D).radius = _weapon.hitbox_radius / s2
 
 func _on_hitbox_body_entered(body: Node) -> void:
 	_try_hit(body)

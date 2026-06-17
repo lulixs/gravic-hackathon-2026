@@ -1,45 +1,48 @@
-[gd_scene format=3 uid="uid://b3pgd00000001"]
+[gd_scene load_steps=9 format=3 uid="uid://b3pgd00000001"]
 
 [ext_resource type="Script" path="res://scripts/pig_guard.gd" id="1_pgd"]
+[ext_resource type="Texture2D" path="res://assets/PigGuards/pig_guard_l0.png" id="l0"]
+[ext_resource type="Texture2D" path="res://assets/PigGuards/pig_guard_l1.png" id="l1"]
+[ext_resource type="Texture2D" path="res://assets/PigGuards/pig_guard_r0.png" id="r0"]
+[ext_resource type="Texture2D" path="res://assets/PigGuards/pig_guard_r1.png" id="r1"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
-size = Vector2(22, 26)
+[sub_resource type="RectangleShape2D" id="body"]
+size = Vector2(28, 26)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
-size = Vector2(26, 30)
+[sub_resource type="RectangleShape2D" id="hit"]
+size = Vector2(32, 30)
+
+[sub_resource type="SpriteFrames" id="gf"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("l0")}, {"duration": 1.0, "texture": ExtResource("l1")}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{"duration": 1.0, "texture": ExtResource("r0")}, {"duration": 1.0, "texture": ExtResource("r1")}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}]
 
 [node name="PigGuard" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 1
 script = ExtResource("1_pgd")
 
-[node name="Sprite" type="ColorRect" parent="."]
-offset_left = -13.0
-offset_top = -15.0
-offset_right = 13.0
-offset_bottom = 15.0
-color = Color(0.92, 0.62, 0.66, 1)
-
-[node name="Helmet" type="ColorRect" parent="."]
-offset_left = -13.0
-offset_top = -15.0
-offset_right = 13.0
-offset_bottom = -6.0
-color = Color(0.55, 0.57, 0.62, 1)
-
-[node name="Snout" type="ColorRect" parent="."]
-offset_left = -5.0
-offset_top = 2.0
-offset_right = 5.0
-offset_bottom = 10.0
-color = Color(0.78, 0.45, 0.5, 1)
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+texture_filter = 2
+scale = Vector2(0.16, 0.16)
+sprite_frames = SubResource("gf")
+animation = &"right"
+autoplay = "right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_body")
+shape = SubResource("body")
 
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 1
 
 [node name="HitboxShape" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource("RectangleShape2D_hit")
+shape = SubResource("hit")

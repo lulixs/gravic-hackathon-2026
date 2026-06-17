@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponResource" format=3 uid="uid://b3waxe0000001"]
+
+[ext_resource type="Script" path="res://scripts/weapon_resource.gd" id="1_wr"]
+
+[resource]
+script = ExtResource("1_wr")
+id = "battle_axe"
+display_name = "Battle-axe"
+damage_multiplier = 3.5
+stamina_jab = 22.0
+stamina_slash = 34.0
+texture_path = "res://assets/Weapons/battle_axe.png"
+display_length = 66.0
+hitbox_radius = 28.0

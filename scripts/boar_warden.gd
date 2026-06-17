@@ -16,7 +16,7 @@ enum State { STALK, TELEGRAPH, CHARGE, STUN }
 @export var engage_radius := 470.0
 @export var base_contact := 9.0
 @export var charge_contact := 20.0
-@export var target_height := 80.0    # on-screen height of the boar in px
+@export var target_height := 120.0   # on-screen height of the boar in px (50% bigger)
 @export var art_faces_right := true  # flip if the source art actually faces left
 
 const IDLE_FMT := "res://assets/boarden/idle/boarden idle_%04d.png"
@@ -33,7 +33,7 @@ var _anim: AnimatedSprite2D
 func _ready() -> void:
 	if enemy_name == "":
 		enemy_name = "The Boarden"
-	max_hp = 170.0
+	max_hp = 340.0
 	contact_damage = base_contact
 	xp_value = 150
 	health_drop_chance = 1.0
