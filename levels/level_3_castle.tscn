@@ -228,8 +228,8 @@ position = Vector2(500, 1024)
 
 [node name="BroadswordPickup" parent="." instance=ExtResource("18_wpk")]
 position = Vector2(500, 1130)
-weapon_id = "broadsword"
-display_name = "Broadsword"
+weapon_id = "battle_axe"
+display_name = "Battle-axe"
 
 [node name="FlyingPig" parent="." instance=ExtResource("17_fpg")]
 position = Vector2(1424, 320)

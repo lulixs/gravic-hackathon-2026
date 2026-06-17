@@ -9,3 +9,6 @@ display_name = "Dagger"
 damage_multiplier = 1.5
 stamina_jab = 10.0
 stamina_slash = 20.0
+texture_path = "res://assets/Weapons/dagger.png"
+display_length = 34.0
+hitbox_radius = 14.0
