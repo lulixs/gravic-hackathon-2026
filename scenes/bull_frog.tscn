@@ -1,0 +1,108 @@
+[gd_scene load_steps=45 format=3]
+
+[ext_resource type="Script" path="res://scripts/garden_snake.gd" id="1_gs"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0001.png" id="f1"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0002.png" id="f2"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0003.png" id="f3"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0004.png" id="f4"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0005.png" id="f5"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0006.png" id="f6"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0007.png" id="f7"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0008.png" id="f8"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0009.png" id="f9"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0010.png" id="f10"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0011.png" id="f11"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0012.png" id="f12"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0013.png" id="f13"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0014.png" id="f14"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0015.png" id="f15"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0016.png" id="f16"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0017.png" id="f17"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0018.png" id="f18"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0019.png" id="f19"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0020.png" id="f20"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0021.png" id="f21"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0022.png" id="f22"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0023.png" id="f23"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0024.png" id="f24"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0025.png" id="f25"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0026.png" id="f26"]
+[ext_resource type="Texture2D" path="res://assets/Frog/frog_0027.png" id="f27"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0000.png" id="d0"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0001.png" id="d1"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0002.png" id="d2"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0003.png" id="d3"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0004.png" id="d4"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0005.png" id="d5"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0006.png" id="d6"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0007.png" id="d7"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0008.png" id="d8"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0009.png" id="d9"]
+[ext_resource type="Texture2D" path="res://assets/Frog/forg-death_0010.png" id="d10"]
+
+[sub_resource type="RectangleShape2D" id="body"]
+size = Vector2(230, 170)
+
+[sub_resource type="RectangleShape2D" id="hit"]
+size = Vector2(245, 182)
+
+[sub_resource type="SpriteFrames" id="idle_frames"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("f1")}, {"duration": 1.0, "texture": ExtResource("f2")}, {"duration": 1.0, "texture": ExtResource("f3")}, {"duration": 1.0, "texture": ExtResource("f4")}, {"duration": 1.0, "texture": ExtResource("f8")}, {"duration": 1.0, "texture": ExtResource("f5")}, {"duration": 1.0, "texture": ExtResource("f6")}, {"duration": 1.0, "texture": ExtResource("f7")}, {"duration": 1.0, "texture": ExtResource("f19")}, {"duration": 1.0, "texture": ExtResource("f20")}, {"duration": 1.0, "texture": ExtResource("f21")}, {"duration": 1.0, "texture": ExtResource("f22")}, {"duration": 1.0, "texture": ExtResource("f24")}, {"duration": 1.0, "texture": ExtResource("f23")}, {"duration": 1.0, "texture": ExtResource("f25")}, {"duration": 1.0, "texture": ExtResource("f26")}, {"duration": 1.0, "texture": ExtResource("f27")}, ],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="SpriteFrames" id="jump_frames"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("f9")}, {"duration": 1.0, "texture": ExtResource("f10")}, {"duration": 1.0, "texture": ExtResource("f11")}, {"duration": 1.0, "texture": ExtResource("f12")}, {"duration": 1.0, "texture": ExtResource("f13")}, {"duration": 1.0, "texture": ExtResource("f14")}, {"duration": 1.0, "texture": ExtResource("f15")}, {"duration": 1.0, "texture": ExtResource("f16")}, {"duration": 1.0, "texture": ExtResource("f17")}, {"duration": 1.0, "texture": ExtResource("f18")}, ],
+"loop": false,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="death_frames"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("d0")}, {"duration": 1.0, "texture": ExtResource("d1")}, {"duration": 1.0, "texture": ExtResource("d2")}, {"duration": 1.0, "texture": ExtResource("d3")}, {"duration": 1.0, "texture": ExtResource("d4")}, {"duration": 1.0, "texture": ExtResource("d5")}, {"duration": 1.0, "texture": ExtResource("d6")}, {"duration": 1.0, "texture": ExtResource("d7")}, {"duration": 1.0, "texture": ExtResource("d8")}, {"duration": 1.0, "texture": ExtResource("d9")}, {"duration": 1.0, "texture": ExtResource("d10")}, ],
+"loop": false,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="BullFrog" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_gs")
+
+[node name="Sprite" type="Node2D" parent="."]
+scale = Vector2(0.45, 0.45)
+
+[node name="Idle" type="AnimatedSprite2D" parent="Sprite"]
+texture_filter = 2
+sprite_frames = SubResource("idle_frames")
+animation = &"default"
+autoplay = "default"
+
+[node name="JumpAttack" type="AnimatedSprite2D" parent="Sprite"]
+texture_filter = 2
+visible = false
+sprite_frames = SubResource("jump_frames")
+animation = &"default"
+
+[node name="Death" type="AnimatedSprite2D" parent="Sprite"]
+texture_filter = 2
+visible = false
+sprite_frames = SubResource("death_frames")
+animation = &"default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("body")
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="HitboxShape" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 8)
+shape = SubResource("hit")

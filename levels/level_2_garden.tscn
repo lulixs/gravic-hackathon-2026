@@ -1,16 +1,43 @@
 [gd_scene format=3 uid="uid://bxido4q372prj"]
 
 [ext_resource type="PackedScene" uid="uid://dh1m5jqolwygd" path="res://lil_dude.tscn" id="1_player"]
-[ext_resource type="Script" path="res://scripts/level_2.gd" id="2_lvl"]
+[ext_resource type="Script" uid="uid://jmjac2jsge44" path="res://scripts/level_2.gd" id="2_lvl"]
 [ext_resource type="PackedScene" uid="uid://b3hud00000001" path="res://scenes/hud.tscn" id="3_hud"]
 [ext_resource type="PackedScene" uid="uid://b3upg00000001" path="res://scenes/upgrade_menu.tscn" id="4_upg"]
 [ext_resource type="PackedScene" uid="uid://b3dlg00000001" path="res://scenes/dialogue_box.tscn" id="5_dlg"]
 [ext_resource type="PackedScene" path="res://scenes/worm.tscn" id="6_worm"]
 [ext_resource type="PackedScene" path="res://scenes/grasshopper.tscn" id="7_gh"]
-[ext_resource type="PackedScene" path="res://scenes/garden_snake.tscn" id="8_snake"]
+[ext_resource type="Texture2D" uid="uid://c72jhcbi3ujuv" path="res://assets/Frog/frog_0001.png" id="8_5lveu"]
+[ext_resource type="PackedScene" path="res://scenes/bull_frog.tscn" id="8_snake"]
+[ext_resource type="Texture2D" uid="uid://dithby78nntbm" path="res://assets/Frog/frog_0002.png" id="9_3o3f0"]
 [ext_resource type="PackedScene" path="res://scenes/mud_patch.tscn" id="9_mud"]
+[ext_resource type="Texture2D" uid="uid://dnyeyldpbylys" path="res://assets/Frog/frog_0003.png" id="10_f7f8w"]
 [ext_resource type="PackedScene" path="res://scenes/pressure_plate.tscn" id="10_plate"]
+[ext_resource type="Texture2D" uid="uid://rbeyprtjoqpj" path="res://assets/Frog/frog_0004.png" id="11_fp7vb"]
 [ext_resource type="PackedScene" uid="uid://b3wpk00000001" path="res://scenes/weapon_pickup.tscn" id="11_wpk"]
+[ext_resource type="Texture2D" uid="uid://bd7lmf6hl0h3r" path="res://assets/Frog/frog_0008.png" id="12_r71x6"]
+[ext_resource type="Texture2D" uid="uid://bxjaddtbqil2o" path="res://assets/Frog/frog_0005.png" id="13_b1wgk"]
+[ext_resource type="Texture2D" uid="uid://dd01t4jm7w8rb" path="res://assets/Frog/frog_0006.png" id="14_dyvck"]
+[ext_resource type="Texture2D" uid="uid://16yptijfivwd" path="res://assets/Frog/frog_0007.png" id="15_s8r72"]
+[ext_resource type="Texture2D" uid="uid://b35uu42r5eiyv" path="res://assets/Frog/frog_0019.png" id="16_so7ly"]
+[ext_resource type="Texture2D" uid="uid://dqv0f55knttwj" path="res://assets/Frog/frog_0020.png" id="17_bansn"]
+[ext_resource type="Texture2D" uid="uid://b2crv4oyrjhhi" path="res://assets/Frog/frog_0021.png" id="18_o1k3e"]
+[ext_resource type="Texture2D" uid="uid://kk5sbb6koe8u" path="res://assets/Frog/frog_0022.png" id="19_kydbf"]
+[ext_resource type="Texture2D" uid="uid://buc2pqndpdpkf" path="res://assets/Frog/frog_0024.png" id="20_5i5lr"]
+[ext_resource type="Texture2D" uid="uid://cpmrbw78ljqmy" path="res://assets/Frog/frog_0023.png" id="21_h2mat"]
+[ext_resource type="Texture2D" uid="uid://bxbrn331rj23r" path="res://assets/Frog/frog_0025.png" id="22_obeey"]
+[ext_resource type="Texture2D" uid="uid://dkwm8p285ofco" path="res://assets/Frog/frog_0026.png" id="23_u3xs2"]
+[ext_resource type="Texture2D" uid="uid://bllahlkqt5hr2" path="res://assets/Frog/frog_0027.png" id="24_iy8wq"]
+[ext_resource type="Texture2D" uid="uid://boc8ddcs6cmfc" path="res://assets/Frog/frog_0009.png" id="25_efsy3"]
+[ext_resource type="Texture2D" uid="uid://d1h1y5dve7dxw" path="res://assets/Frog/frog_0010.png" id="26_xt5jx"]
+[ext_resource type="Texture2D" uid="uid://b6f16aoj8t04a" path="res://assets/Frog/frog_0011.png" id="27_fsu6g"]
+[ext_resource type="Texture2D" uid="uid://cv6vmxe0ao3f6" path="res://assets/Frog/frog_0012.png" id="28_qept7"]
+[ext_resource type="Texture2D" uid="uid://ddh3eqmer4f0g" path="res://assets/Frog/frog_0013.png" id="29_v0oo4"]
+[ext_resource type="Texture2D" uid="uid://dm2auqquxmhuv" path="res://assets/Frog/frog_0014.png" id="30_cj25r"]
+[ext_resource type="Texture2D" uid="uid://bj5nwyxguin3i" path="res://assets/Frog/frog_0015.png" id="31_b3n1a"]
+[ext_resource type="Texture2D" uid="uid://dc6bh6dr1jive" path="res://assets/Frog/frog_0016.png" id="32_ds6ta"]
+[ext_resource type="Texture2D" uid="uid://b7xhwtljxb5yn" path="res://assets/Frog/frog_0017.png" id="33_t2wdv"]
+[ext_resource type="Texture2D" uid="uid://c8r05r62xbdro" path="res://assets/Frog/frog_0018.png" id="34_oi756"]
 
 [sub_resource type="RectangleShape2D" id="wall_h"]
 size = Vector2(2400, 32)
@@ -21,148 +48,245 @@ size = Vector2(32, 1500)
 [sub_resource type="RectangleShape2D" id="gate_shape"]
 size = Vector2(2336, 24)
 
-[node name="Level2" type="Node2D"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_w1ccx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_5lveu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_3o3f0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_f7f8w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_fp7vb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_r71x6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_b1wgk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_dyvck")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_s8r72")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_so7ly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_bansn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_o1k3e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_kydbf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_5i5lr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_h2mat")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_obeey")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_u3xs2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_iy8wq")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xtie4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("25_efsy3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_xt5jx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_fsu6g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_qept7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_v0oo4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_cj25r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_b3n1a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_ds6ta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_t2wdv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_oi756")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Level2" type="Node2D" unique_id=834507371]
 script = ExtResource("2_lvl")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=801101971]
 offset_right = 2400.0
 offset_bottom = 1500.0
 color = Color(0.18, 0.3, 0.16, 1)
 
-[node name="ArenaTint" type="ColorRect" parent="."]
+[node name="ArenaTint" type="ColorRect" parent="." unique_id=1408218236]
 offset_top = 1092.0
 offset_right = 2400.0
 offset_bottom = 1500.0
 color = Color(0.12, 0.2, 0.12, 1)
 
-[node name="Walls" type="Node2D" parent="."]
+[node name="Walls" type="Node2D" parent="." unique_id=1142665371]
 
-[node name="Top" type="StaticBody2D" parent="Walls"]
+[node name="Top" type="StaticBody2D" parent="Walls" unique_id=784183576]
 position = Vector2(1200, 16)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Top"]
+[node name="Sprite" type="ColorRect" parent="Walls/Top" unique_id=1595995735]
 offset_left = -1200.0
 offset_top = -16.0
 offset_right = 1200.0
 offset_bottom = 16.0
 color = Color(0.1, 0.14, 0.08, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top" unique_id=1891912533]
 shape = SubResource("wall_h")
 
-[node name="Bottom" type="StaticBody2D" parent="Walls"]
+[node name="Bottom" type="StaticBody2D" parent="Walls" unique_id=2004509360]
 position = Vector2(1200, 1484)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Bottom"]
+[node name="Sprite" type="ColorRect" parent="Walls/Bottom" unique_id=897021596]
 offset_left = -1200.0
 offset_top = -16.0
 offset_right = 1200.0
 offset_bottom = 16.0
 color = Color(0.1, 0.14, 0.08, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom" unique_id=1773007803]
 shape = SubResource("wall_h")
 
-[node name="Left" type="StaticBody2D" parent="Walls"]
+[node name="Left" type="StaticBody2D" parent="Walls" unique_id=646934402]
 position = Vector2(16, 750)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Left"]
+[node name="Sprite" type="ColorRect" parent="Walls/Left" unique_id=430650716]
 offset_left = -16.0
 offset_top = -750.0
 offset_right = 16.0
 offset_bottom = 750.0
 color = Color(0.1, 0.14, 0.08, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left" unique_id=1113649352]
 shape = SubResource("wall_v")
 
-[node name="Right" type="StaticBody2D" parent="Walls"]
+[node name="Right" type="StaticBody2D" parent="Walls" unique_id=370238192]
 position = Vector2(2384, 750)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Right"]
+[node name="Sprite" type="ColorRect" parent="Walls/Right" unique_id=70328447]
 offset_left = -16.0
 offset_top = -750.0
 offset_right = 16.0
 offset_bottom = 750.0
 color = Color(0.1, 0.14, 0.08, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right" unique_id=839162380]
 shape = SubResource("wall_v")
 
-[node name="Gate" type="StaticBody2D" parent="."]
+[node name="Gate" type="StaticBody2D" parent="." unique_id=1543198967]
 position = Vector2(1200, 1080)
 
-[node name="Sprite" type="ColorRect" parent="Gate"]
+[node name="Sprite" type="ColorRect" parent="Gate" unique_id=1140772997]
 offset_left = -1168.0
 offset_top = -12.0
 offset_right = 1168.0
 offset_bottom = 12.0
 color = Color(0.45, 0.38, 0.22, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Gate"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gate" unique_id=1650210113]
 shape = SubResource("gate_shape")
 
-[node name="Player" parent="." instance=ExtResource("1_player")]
+[node name="Player" parent="." unique_id=631408958 instance=ExtResource("1_player")]
 position = Vector2(200, 200)
 
-[node name="Worm1" parent="." instance=ExtResource("6_worm")]
+[node name="Worm1" parent="." unique_id=1542667470 instance=ExtResource("6_worm")]
 position = Vector2(700, 320)
 
-[node name="Worm2" parent="." instance=ExtResource("6_worm")]
+[node name="Worm2" parent="." unique_id=2046585753 instance=ExtResource("6_worm")]
 position = Vector2(1500, 360)
 
-[node name="Worm3" parent="." instance=ExtResource("6_worm")]
+[node name="Worm3" parent="." unique_id=1184562328 instance=ExtResource("6_worm")]
 position = Vector2(1000, 760)
 
-[node name="Grasshopper1" parent="." instance=ExtResource("7_gh")]
+[node name="Grasshopper1" parent="." unique_id=1364707079 instance=ExtResource("7_gh")]
 position = Vector2(1800, 260)
 
-[node name="Grasshopper2" parent="." instance=ExtResource("7_gh")]
+[node name="Grasshopper2" parent="." unique_id=711541900 instance=ExtResource("7_gh")]
 position = Vector2(520, 600)
 
-[node name="Grasshopper3" parent="." instance=ExtResource("7_gh")]
+[node name="Grasshopper3" parent="." unique_id=723770575 instance=ExtResource("7_gh")]
 position = Vector2(2040, 760)
 
-[node name="Mud1" parent="." instance=ExtResource("9_mud")]
+[node name="Mud1" parent="." unique_id=2009330751 instance=ExtResource("9_mud")]
 position = Vector2(1100, 460)
 
-[node name="Mud2" parent="." instance=ExtResource("9_mud")]
+[node name="Mud2" parent="." unique_id=1383045159 instance=ExtResource("9_mud")]
 position = Vector2(1620, 660)
 
-[node name="Mud3" parent="." instance=ExtResource("9_mud")]
+[node name="Mud3" parent="." unique_id=1242697542 instance=ExtResource("9_mud")]
 position = Vector2(820, 900)
 
-[node name="Mud4" parent="." instance=ExtResource("9_mud")]
+[node name="Mud4" parent="." unique_id=287603616 instance=ExtResource("9_mud")]
 position = Vector2(1900, 420)
 
-[node name="Plate1" parent="." instance=ExtResource("10_plate")]
+[node name="Plate1" parent="." unique_id=2074955319 instance=ExtResource("10_plate")]
 position = Vector2(350, 300)
 
-[node name="Plate2" parent="." instance=ExtResource("10_plate")]
+[node name="Plate2" parent="." unique_id=1316008904 instance=ExtResource("10_plate")]
 position = Vector2(2040, 300)
 
-[node name="Plate3" parent="." instance=ExtResource("10_plate")]
+[node name="Plate3" parent="." unique_id=1934582234 instance=ExtResource("10_plate")]
 position = Vector2(1200, 920)
 
-[node name="GardenSnake" parent="." instance=ExtResource("8_snake")]
+[node name="BullFrog" parent="." unique_id=1786542870 instance=ExtResource("8_snake")]
 position = Vector2(1200, 1300)
 arena = Rect2(32, 1100, 2336, 372)
 
-[node name="BroadswordPickup" parent="." instance=ExtResource("11_wpk")]
+[node name="BroadswordPickup" parent="." unique_id=985612717 instance=ExtResource("11_wpk")]
 position = Vector2(1200, 1210)
 weapon_id = "broadsword"
 display_name = "Broadsword"
 
-[node name="HUD" parent="." instance=ExtResource("3_hud")]
+[node name="HUD" parent="." unique_id=418480061 instance=ExtResource("3_hud")]
 
-[node name="UpgradeMenu" parent="." instance=ExtResource("4_upg")]
+[node name="UpgradeMenu" parent="." unique_id=207460644 instance=ExtResource("4_upg")]
 
-[node name="DialogueBox" parent="." instance=ExtResource("5_dlg")]
+[node name="DialogueBox" parent="." unique_id=1629152957 instance=ExtResource("5_dlg")]
 
-[node name="CompleteLabel" type="CanvasLayer" parent="."]
+[node name="CompleteLabel" type="CanvasLayer" parent="." unique_id=1728137895]
 visible = false
 
-[node name="Panel" type="ColorRect" parent="CompleteLabel"]
+[node name="Panel" type="ColorRect" parent="CompleteLabel" unique_id=1805871154]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -170,7 +294,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Label" type="Label" parent="CompleteLabel"]
+[node name="Label" type="Label" parent="CompleteLabel" unique_id=500732217]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
