@@ -14,6 +14,7 @@ const STAMINA_REGEN := 20.0  # per second
 const BLINK_INTERVAL := 0.06
 const KNOCKBACK_SPEED := 420.0  # shove distance when hit, so enemies can't glue to you
 const KNOCKBACK_TIME := 0.16
+const RAMP_DEGREES := 22.5  # basement ramp slope
 
 var state = IDLE
 var dir := Vector2.DOWN
@@ -23,6 +24,12 @@ var last_dir := Vector2.DOWN
 var i_frames := false
 var cobwebbed := false
 var charging := false
+var on_ramp := false  # set by the level when the player is standing on the ramp
+
+# constant vertical speed applied while walking the ramp. derived from the ramp
+# angle at full speed so it reads as ~22.5°, but it is a fixed value: the same
+# up/down speed regardless of how fast the player is moving horizontally.
+var _ramp_y_speed := MAX_SPEED * tan(deg_to_rad(RAMP_DEGREES))
 
 # state timers
 var state_timer := 0.0
@@ -71,7 +78,19 @@ func _physics_process(delta: float) -> void:
 		DEAD:
 			velocity = Vector2.ZERO
 
+	_apply_ramp()
 	move_and_slide()
+
+# On the ramp, horizontal travel sells the illusion of a 22.5° slope: moving
+# right pushes the player up, moving left pushes them down. The horizontal
+# velocity is left untouched; we just *set* a constant vertical speed based on
+# which way they're moving (overriding any vertical input so it can't compound).
+# Gated on input direction, not velocity, so releasing the keys lets normal
+# friction bring the player to a stop instead of sliding down the slope.
+func _apply_ramp() -> void:
+	if not on_ramp or is_zero_approx(dir.x):
+		return
+	velocity.y = -signf(dir.x) * _ramp_y_speed
 
 func idle(_delta: float) -> void:
 	animation.travel("idle")
