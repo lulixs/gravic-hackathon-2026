@@ -6,18 +6,20 @@ extends EnemyBase
 @export var chase_radius := 150.0
 @export var wander_change_interval := 2.0
 @export var target_height := 56.0   # on-screen height of the spider in pixels
+@export var anim_fps := 6.0
 
-# Single hand-drawn sprite (the drawing faces LEFT). We mirror it horizontally
-# when the spider moves right, so one image covers both directions.
-const TEX_PATH := "res://assets/baby_spider.png"
-const ART_FACES_RIGHT := false
+# New hand-drawn spider: two walk states per direction. spider_0 / spider_2 face
+# LEFT (the head leads), spider_1 / spider_3 face RIGHT. We swap between the two
+# direction-specific animations instead of mirroring a single sprite.
+const FRAME_FMT := "res://assets/Spiders/spider_%d.png"
+const LEFT_FRAMES := [0, 2]
+const RIGHT_FRAMES := [1, 3]
 
 var _wander_dir := Vector2.ZERO
 var _wander_timer := 0.0
 var _player: Node2D
-var _tex: Texture2D
 var _facing_right := false
-@onready var _spr := $Sprite as Sprite2D
+@onready var _anim := $Sprite as AnimatedSprite2D
 
 func _ready() -> void:
 	if enemy_name == "":
@@ -32,26 +34,39 @@ func _ready() -> void:
 		contact_damage = 5.0  # light touch damage while chasing in its own room
 
 func _setup_sprite() -> void:
-	if ResourceLoader.exists(TEX_PATH):
-		_tex = load(TEX_PATH)
-	if _tex == null:
+	var probe_path := FRAME_FMT % LEFT_FRAMES[0]
+	if not ResourceLoader.exists(probe_path):
 		# art not imported yet — fall back to a small gray box so the mob is still visible
 		var img := Image.create(16, 12, false, Image.FORMAT_RGBA8)
 		img.fill(Color(0.25, 0.25, 0.25))
-		_spr.texture = ImageTexture.create_from_image(img)
+		var tex := ImageTexture.create_from_image(img)
+		var sf_fallback := SpriteFrames.new()
+		sf_fallback.add_animation("left")
+		sf_fallback.add_frame("left", tex)
+		sf_fallback.add_animation("right")
+		sf_fallback.add_frame("right", tex)
+		_anim.sprite_frames = sf_fallback
+		_anim.play("left")
 		return
 
-	# scale the drawing down to the desired on-screen height, and use linear filtering
-	# so the hand-drawn art stays smooth instead of pixelated when shrunk.
-	var s := target_height / float(maxi(_tex.get_height(), 1))
-	_spr.texture = _tex
-	_spr.scale = Vector2(s, s)
-	_spr.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	_apply_facing()
+	var sf := SpriteFrames.new()
+	if sf.has_animation("default"):
+		sf.remove_animation("default")
+	_add_anim(sf, "left", LEFT_FRAMES)
+	_add_anim(sf, "right", RIGHT_FRAMES)
+	_anim.sprite_frames = sf
+	_anim.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
-	# size the hurtbox (body collider the sword reads) + the contact hitbox to the art,
-	# kept tighter than the full sprite since the legs are mostly empty space.
-	var w := _tex.get_width() * s * 0.6
+	# scale the drawing down to the desired on-screen height
+	var probe: Texture2D = load(probe_path)
+	var s := target_height / float(maxi(probe.get_height(), 1))
+	_anim.scale = Vector2(s, s)
+	_apply_facing()
+	_anim.play("left")
+
+	# size hurtbox (sword reads this) + contact hitbox to the art, kept tighter than the
+	# full sprite since the legs are mostly empty space
+	var w := probe.get_width() * s * 0.55
 	var h := target_height * 0.6
 	var body_shape := RectangleShape2D.new()
 	body_shape.size = Vector2(w, h)
@@ -62,6 +77,16 @@ func _setup_sprite() -> void:
 
 	# float the health bar just above the (now correctly sized) sprite
 	set_health_bar_offset(-(target_height * 0.5 + 10.0))
+
+func _add_anim(sf: SpriteFrames, anim_name: String, frames: Array) -> void:
+	if not sf.has_animation(anim_name):
+		sf.add_animation(anim_name)
+	sf.set_animation_speed(anim_name, anim_fps)
+	sf.set_animation_loop(anim_name, true)
+	for idx in frames:
+		var path: String = FRAME_FMT % idx
+		if ResourceLoader.exists(path):
+			sf.add_frame(anim_name, load(path))
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)
@@ -101,10 +126,11 @@ func _update_facing() -> void:
 	_apply_facing()
 
 func _apply_facing() -> void:
-	if _spr.texture == null:
+	if _anim == null or _anim.sprite_frames == null:
 		return
-	# flip only when the desired facing differs from the art's native (left) facing
-	_spr.flip_h = (_facing_right != ART_FACES_RIGHT)
+	var want := "right" if _facing_right else "left"
+	if _anim.animation != want:
+		_anim.play(want)
 
 func _pick_wander_dir() -> void:
 	_wander_timer = wander_change_interval

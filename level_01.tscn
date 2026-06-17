@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://b76rqbsgles7b"]
+
+[ext_resource type="Script" uid="uid://pkt7l26t5l27" path="res://scripts/level_0.gd" id="1_qlag8"]
+[ext_resource type="PackedScene" uid="uid://dh1m5jqolwygd" path="res://lil_dude.tscn" id="2_5itje"]
+[ext_resource type="PackedScene" uid="uid://b3spi00000001" path="res://scenes/baby_spider.tscn" id="3_sb6k4"]
+[ext_resource type="PackedScene" uid="uid://b3wpk00000001" path="res://scenes/weapon_pickup.tscn" id="4_e3hfu"]
+[ext_resource type="PackedScene" uid="uid://b3hud00000001" path="res://scenes/hud.tscn" id="5_pl2qr"]
+[ext_resource type="PackedScene" uid="uid://b3upg00000001" path="res://scenes/upgrade_menu.tscn" id="6_rlskx"]
+[ext_resource type="PackedScene" uid="uid://b3tut00000001" path="res://scenes/tutorial_prompt.tscn" id="7_yp1q4"]
+[ext_resource type="PackedScene" uid="uid://b3dlg00000001" path="res://scenes/dialogue_box.tscn" id="8_o3xv4"]
+
+[sub_resource type="RectangleShape2D" id="wall_h"]
+size = Vector2(1280, 32)
+
+[sub_resource type="RectangleShape2D" id="wall_v"]
+size = Vector2(32, 720)
+
+[node name="Level0" type="Node2D" unique_id=1305964273]
+script = ExtResource("1_qlag8")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1382758389]
+offset_right = 1280.0
+offset_bottom = 720.0
+color = Color(0.2, 0.16, 0.12, 1)
+
+[node name="Walls" type="Node2D" parent="." unique_id=1263054274]
+
+[node name="Top" type="StaticBody2D" parent="Walls" unique_id=2027565888]
+position = Vector2(640, 16)
+
+[node name="Sprite" type="ColorRect" parent="Walls/Top" unique_id=1497413050]
+offset_left = -640.0
+offset_top = -16.0
+offset_right = 640.0
+offset_bottom = 16.0
+color = Color(0.1, 0.08, 0.06, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top" unique_id=954123194]
+shape = SubResource("wall_h")
+
+[node name="Bottom" type="StaticBody2D" parent="Walls" unique_id=1438118334]
+position = Vector2(640, 704)
+
+[node name="Sprite" type="ColorRect" parent="Walls/Bottom" unique_id=2063725003]
+offset_left = -640.0
+offset_top = -16.0
+offset_right = 640.0
+offset_bottom = 16.0
+color = Color(0.1, 0.08, 0.06, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom" unique_id=2092403938]
+shape = SubResource("wall_h")
+
+[node name="Left" type="StaticBody2D" parent="Walls" unique_id=524081860]
+position = Vector2(16, 360)
+
+[node name="Sprite" type="ColorRect" parent="Walls/Left" unique_id=2049167601]
+offset_left = -16.0
+offset_top = -360.0
+offset_right = 16.0
+offset_bottom = 360.0
+color = Color(0.1, 0.08, 0.06, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left" unique_id=371224299]
+shape = SubResource("wall_v")
+
+[node name="Right" type="StaticBody2D" parent="Walls" unique_id=239929564]
+position = Vector2(1264, 360)
+
+[node name="Sprite" type="ColorRect" parent="Walls/Right" unique_id=2046052979]
+offset_left = -16.0
+offset_top = -360.0
+offset_right = 16.0
+offset_bottom = 360.0
+color = Color(0.1, 0.08, 0.06, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right" unique_id=965341448]
+shape = SubResource("wall_v")
+
+[node name="Player" parent="." unique_id=1574775994 instance=ExtResource("2_5itje")]
+position = Vector2(180, 360)
+
+[node name="Spider1" parent="." unique_id=1636054205 instance=ExtResource("3_sb6k4")]
+position = Vector2(520, 240)
+docile = true
+
+[node name="Spider2" parent="." unique_id=329689918 instance=ExtResource("3_sb6k4")]
+position = Vector2(720, 480)
+docile = true
+
+[node name="Spider3" parent="." unique_id=769352603 instance=ExtResource("3_sb6k4")]
+position = Vector2(920, 300)
+docile = true
+
+[node name="DaggerPickup" parent="." unique_id=1712170734 instance=ExtResource("4_e3hfu")]
+position = Vector2(640, 360)
+
+[node name="HUD" parent="." unique_id=121680812 instance=ExtResource("5_pl2qr")]
+
+[node name="UpgradeMenu" parent="." unique_id=363687969 instance=ExtResource("6_rlskx")]
+
+[node name="TutorialPrompt" parent="." unique_id=1224530580 instance=ExtResource("7_yp1q4")]
+
+[node name="DialogueBox" parent="." unique_id=1250211674 instance=ExtResource("8_o3xv4")]
+
+[node name="CompleteLabel" type="CanvasLayer" parent="." unique_id=738246815]
+visible = false
+
+[node name="Panel" type="ColorRect" parent="CompleteLabel" unique_id=1591165739]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="Label" type="Label" parent="CompleteLabel" unique_id=1700416079]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -32.0
+offset_right = 260.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "TUTORIAL COMPLETE"
+horizontal_alignment = 1
+vertical_alignment = 1

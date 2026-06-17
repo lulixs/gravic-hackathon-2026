@@ -34,12 +34,15 @@ func _ready() -> void:
 		p.activated.connect(_on_plate_activated)
 	for b in get_tree().get_nodes_in_group("boss"):
 		b.died.connect(_on_boss_died)
+		if b.has_signal("half_health"):
+			b.half_health.connect(_on_boss_half)
 	broadsword.collected.connect(_on_weapon_collected)
 
 	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "The Garden. Sunlight at last — but the soil here bites back."},
-		{"speaker": "Narrator", "text": "Worms churn the earth and hoppers strike from the weeds. Mind the mud; it drags at your wings."},
-		{"speaker": "Narrator", "text": "Find the three [color=#ffe08a]stone plates[/color] and stand on each to raise the gate to the serpent's den."},
+		{"speaker": "Old Fly", "text": "Outside is not freedom. It is distance from safety."},
+		{"speaker": "You", "text": "[i]The air feels wider here. But so do the dangers.[/i]"},
+		{"speaker": "Snake", "text": "[i]…hungry…[/i]"},
+		{"speaker": "Narrator", "text": "Snakes and hoppers prowl the weeds; mud drags at your wings. Stand on the three [color=#ffe08a]stone plates[/color] to raise the gate to the frog's pond."},
 	])
 
 func _on_plate_activated() -> void:
@@ -51,14 +54,24 @@ func _on_plate_activated() -> void:
 			if c is CollisionShape2D:
 				c.set_deferred("disabled", true)
 		dialogue.play_lines([
-			{"speaker": "Narrator", "text": "Stone grinds on stone — the gate yawns open. The [color=#9ad06a]Garden Serpent[/color] waits in the hollow below."},
+			{"speaker": "Narrator", "text": "Stone grinds on stone — the gate yawns open. The [color=#9ad06a]Bullfrog[/color] squats in the hollow below."},
+			{"speaker": "Bullfrog", "text": "Things fall into my pond. And I keep what falls."},
+			{"speaker": "Bullfrog", "text": "You are small enough to forget."},
 		])
+
+func _on_boss_half() -> void:
+	dialogue.play_lines([
+		{"speaker": "Bullfrog", "text": "You struggle like everything else. That is why you are delicious."},
+	])
 
 func _on_boss_died() -> void:
 	broadsword.visible = true
 	broadsword.monitoring = true
 	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "The serpent coils, then stills. A [color=#9ad0ff]Broadsword[/color] lies half-buried in the loam — claim it."},
+		{"speaker": "Bullfrog", "text": "[i]Even the sky… sends leftovers…[/i]"},
+		{"speaker": "Old Fly", "text": "The ground is not empty. It just hides more carefully now."},
+		{"speaker": "You", "text": "[i]I move faster than I used to… but I still feel behind everything.[/i]"},
+		{"speaker": "Narrator", "text": "A [color=#9ad0ff]Broadsword[/color] lies half-buried in the loam — claim it."},
 	])
 
 func _on_weapon_collected(_id: String) -> void:
