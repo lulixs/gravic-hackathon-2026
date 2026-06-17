@@ -70,6 +70,9 @@ func _on_boss_died() -> void:
 	])
 
 func _on_weapon_collected(_id: String) -> void:
+	if weapon_collected:
+		return
 	weapon_collected = true
-	complete_label.visible = true
-	get_tree().paused = true
+	# Flatsword in hand — descend out of the basement into the Garden
+	await get_tree().create_timer(0.6).timeout
+	get_tree().change_scene_to_file("res://levels/level_2_garden.tscn")

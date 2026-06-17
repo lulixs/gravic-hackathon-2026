@@ -5,6 +5,7 @@ signal stamina_changed(val: float, max_val: float)
 signal xp_changed(val: int)
 signal weapon_changed(id: String)
 signal player_died
+signal upgrades_changed
 
 @export var max_hp := 100.0
 @export var max_stamina := 100.0
@@ -14,6 +15,14 @@ var stamina := max_stamina
 var xp := 0
 var current_weapon := "stick"
 var damage_mult := 1.0  # global damage scaling from XP upgrades
+
+# XP upgrades: Health / Stamina / Strength, each up to 3 levels with escalating cost
+const UPGRADE_COSTS := [150, 200, 250]   # cost for level 1, 2, 3
+const UPGRADE_MAX_LEVEL := 3
+const HP_PER_LEVEL := 25.0
+const STAMINA_PER_LEVEL := 25.0
+const STRENGTH_PER_LEVEL := 0.15  # +15% damage per level
+var upgrade_levels := {"hp": 0, "stamina": 0, "strength": 0}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS  # keep listening for fullscreen toggle even when paused
@@ -35,10 +44,12 @@ func reset() -> void:
 	xp = 0
 	current_weapon = "stick"
 	damage_mult = 1.0
+	upgrade_levels = {"hp": 0, "stamina": 0, "strength": 0}
 	hp_changed.emit(hp, max_hp)
 	stamina_changed.emit(stamina, max_stamina)
 	xp_changed.emit(xp)
 	weapon_changed.emit(current_weapon)
+	upgrades_changed.emit()
 
 func take_damage(n: float) -> void:
 	hp = clampf(hp - n, 0.0, max_hp)
@@ -88,3 +99,30 @@ func increase_max_stamina(n: float) -> void:
 
 func add_damage_mult(frac: float) -> void:
 	damage_mult += frac
+
+# --- XP upgrades ---
+
+## Cost of the NEXT level for a stat ("hp"/"stamina"/"strength"), or -1 if maxed.
+func upgrade_cost(stat: String) -> int:
+	var lvl: int = upgrade_levels.get(stat, 0)
+	if lvl >= UPGRADE_MAX_LEVEL:
+		return -1
+	return UPGRADE_COSTS[lvl]
+
+## Buy the next level of a stat. Returns false if maxed or can't afford it.
+func try_upgrade(stat: String) -> bool:
+	var lvl: int = upgrade_levels.get(stat, 0)
+	if lvl >= UPGRADE_MAX_LEVEL:
+		return false
+	if not spend_xp(UPGRADE_COSTS[lvl]):
+		return false
+	upgrade_levels[stat] = lvl + 1
+	match stat:
+		"hp":
+			increase_max_hp(HP_PER_LEVEL)
+		"stamina":
+			increase_max_stamina(STAMINA_PER_LEVEL)
+		"strength":
+			add_damage_mult(STRENGTH_PER_LEVEL)
+	upgrades_changed.emit()
+	return true
