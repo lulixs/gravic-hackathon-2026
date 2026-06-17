@@ -6,16 +6,24 @@ signal died
 @export var max_hp := 30.0
 @export var contact_damage := 10.0
 @export var xp_value := 25
-@export var health_drop_chance := 0.2
+@export var health_drop_chance := 0.5
 @export var i_frame_duration := 0.3
 @export var health_bar_width := 30.0
 @export var health_bar_offset_y := -22.0
 @export var enemy_name := ""
+@export var chase_standoff := 22.0   # stop this far from the player so we don't crowd onto them
+@export var contact_range := 36.0    # deal contact damage when this close to the player
+@export var knockback_resist := 0.0  # 0 = full knockback from sword hits, 1 = immune (bosses)
+
+const KNOCKBACK_TIME := 0.16
 
 var hp := max_hp
 var i_frames := false
 var _i_timer := 0.0
 var _blink_accum := 0.0
+var _kb_timer := 0.0
+var _player_excepted := false
+var _cobweb_count := 0   # how many cobwebs we're currently standing in
 var _hitbox: Area2D
 var _sprite: Node  # Node2D or ColorRect — anything with modulate
 var _hb_bg: ColorRect
@@ -39,6 +47,13 @@ func _ready() -> void:
 	_create_health_bar()
 
 func _physics_process(delta: float) -> void:
+	# Pass through the player's body so we never grind/stick to them. Walls (and the
+	# player passing through us) are unaffected; contact damage is handled separately.
+	if not _player_excepted:
+		var p := _player_node()
+		if p:
+			add_collision_exception_with(p)
+			_player_excepted = true
 	if i_frames:
 		_i_timer -= delta
 		_blink_accum += delta
@@ -51,7 +66,7 @@ func _physics_process(delta: float) -> void:
 				_sprite.modulate = Color(1, 1, 1, 1)
 	_apply_contact_damage()
 
-func take_damage(amount: float) -> void:
+func take_damage(amount: float, knockback: Vector2 = Vector2.ZERO) -> void:
 	if i_frames:
 		return
 	hp -= amount
@@ -63,6 +78,43 @@ func take_damage(amount: float) -> void:
 	i_frames = true
 	_i_timer = i_frame_duration
 	_blink_accum = 0.0
+	if knockback != Vector2.ZERO and knockback_resist < 1.0:
+		velocity = knockback * (1.0 - knockback_resist)
+		_kb_timer = KNOCKBACK_TIME
+
+# While knocked back, ride out the shove instead of running normal AI movement.
+# Movement subclasses call this right after super._physics_process and return if true.
+func knockback_active(delta: float) -> bool:
+	if _kb_timer <= 0.0:
+		return false
+	_kb_timer -= delta
+	velocity = velocity.move_toward(Vector2.ZERO, 900.0 * delta)
+	move_and_slide()
+	return true
+
+# Chase velocity that homes in on a ring `chase_standoff` away from the player and
+# holds there — easing to a stop as it arrives and gently backing off if it ends up
+# too close. Keeps enemies at arm's length (still inside contact_range) instead of
+# drifting onto / sticking to the player's body.
+func chase_velocity_to(player_pos: Vector2, speed: float) -> Vector2:
+	var to := player_pos - global_position
+	var d := to.length()
+	if d <= 0.01:
+		return Vector2.ZERO
+	var dir := to / d
+	var err := d - chase_standoff   # >0 too far (approach), <0 too close (back off)
+	return dir * clampf(err * 6.0, -speed * 0.6, speed) * cobweb_factor()
+
+# Cobwebs (cobweb.gd) call enter/exit as enemies walk in and out. While webbed,
+# movement is crushed to ~12% — the same massive drag the player feels.
+func cobweb_factor() -> float:
+	return 0.12 if _cobweb_count > 0 else 1.0
+
+func enter_cobweb() -> void:
+	_cobweb_count += 1
+
+func exit_cobweb() -> void:
+	_cobweb_count = max(_cobweb_count - 1, 0)
 
 # ---------------- health bar ----------------
 
@@ -141,16 +193,18 @@ func _drop_loot() -> void:
 		heart.global_position = global_position
 		get_parent().add_child(heart)
 
-# Continuous contact damage: while the player overlaps our hitbox we keep calling
-# take_damage. The player's own i-frames rate-limit it, so brushing a spider chips
-# HP every i-frame window instead of only on the single frame the player enters.
+# Distance-based contact damage. We no longer physically touch the player (collision
+# exception), and the player's collision capsule sits low at its feet, so an Area
+# overlap check was unreliable — proximity to the player is what matters. The player's
+# own i-frames rate-limit this, so staying close chips HP once per i-frame window.
 func _apply_contact_damage() -> void:
-	if contact_damage <= 0.0 or _hitbox == null or not _hitbox.monitoring:
+	if contact_damage <= 0.0:
 		return
-	for body in _hitbox.get_overlapping_bodies():
-		if body.is_in_group("player") and body.has_method("take_damage"):
-			body.take_damage(contact_damage, global_position)  # pass our pos for knockback
-			return
+	var p := _player_node()
+	if p == null or not p.has_method("take_damage"):
+		return
+	if global_position.distance_to(p.global_position) <= contact_range:
+		p.take_damage(contact_damage, global_position)  # pass our pos for knockback
 
 func set_hitbox_enabled(enabled: bool) -> void:
 	if _hitbox:

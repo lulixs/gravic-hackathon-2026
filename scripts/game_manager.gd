@@ -51,6 +51,15 @@ func reset() -> void:
 	weapon_changed.emit(current_weapon)
 	upgrades_changed.emit()
 
+## Respawn after death: refill HP/stamina but KEEP all progression (weapon, XP,
+## upgrade levels, max HP/stamina, damage). Used when reloading the current level
+## on death so upgrades persist. (reset() is only for starting a brand-new run.)
+func respawn() -> void:
+	hp = max_hp
+	stamina = max_stamina
+	hp_changed.emit(hp, max_hp)
+	stamina_changed.emit(stamina, max_stamina)
+
 func take_damage(n: float) -> void:
 	hp = clampf(hp - n, 0.0, max_hp)
 	hp_changed.emit(hp, max_hp)

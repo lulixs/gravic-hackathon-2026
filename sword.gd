@@ -8,6 +8,7 @@ signal charging_changed(is_charging: bool)
 @export var FOLLOW_SPEED = 12.0  # how snappily the sword chases the mouse
 @export var BLOCK_SPEED = 10.0   # how quickly the sword eases in/out of the block stance
 @export var BASE_DAMAGE := 10.0
+@export var BASE_KNOCKBACK := 210.0   # shove dealt to enemies on hit; scales with Strength upgrades
 @export var BASE_STAMINA_COST := 15.0
 @export var HITBOX_RADIUS := 18.0
 @export var ATTACK_DURATION := 0.15
@@ -178,4 +179,11 @@ func _try_hit(body: Node) -> void:
 		return
 	if body.is_in_group("enemy") and body.has_method("take_damage"):
 		_hit_bodies.append(body)
-		body.take_damage(pending_damage)
+		# knock the enemy away from the player; stronger as Strength is upgraded
+		var kb := Vector2.ZERO
+		var player := get_parent() as Node2D
+		if player:
+			var dir: Vector2 = body.global_position - player.global_position
+			dir = dir.normalized() if dir != Vector2.ZERO else Vector2.RIGHT
+			kb = dir * BASE_KNOCKBACK * GameManager.damage_mult
+		body.take_damage(pending_damage, kb)

@@ -169,12 +169,12 @@ func _enter_dead() -> void:
 		return
 	state = DEAD
 	velocity = Vector2.ZERO
-	# brief death beat (player stays visible, tinted red) then restart the level
-	# from scratch with all stats reset, as if you just walked in.
+	# brief death beat (player stays visible, tinted red) then restart the level with
+	# HP/stamina refilled but all progression kept — weapon, XP and upgrades persist.
 	frames.modulate = Color(0.7, 0.15, 0.15, 1.0)
 	await get_tree().create_timer(1.0).timeout
 	get_tree().paused = false  # in case death overlapped a paused menu/dialogue
-	GameManager.reset()
+	GameManager.respawn()
 	get_tree().reload_current_scene()
 
 func _on_player_died() -> void:

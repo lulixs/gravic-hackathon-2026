@@ -11,7 +11,12 @@ extends CanvasLayer
 @onready var hp_stat: Label = $Panel/Center/VBox/HPStat
 @onready var stamina_stat: Label = $Panel/Center/VBox/StaminaStat
 @onready var weapon_stat: Label = $Panel/Center/VBox/WeaponStat
+@onready var weapon_detail: Label = $Panel/Center/VBox/WeaponDetail
 @onready var damage_stat: Label = $Panel/Center/VBox/DamageStat
+
+# Mirrors sword.gd's BASE_DAMAGE / BASE_KNOCKBACK so the screen can preview swing stats.
+const SWORD_BASE_DAMAGE := 10.0
+const SWORD_BASE_KNOCKBACK := 210.0
 
 func _ready() -> void:
 	# ALWAYS (not WHEN_PAUSED) so C still toggles while the game is running, and the
@@ -43,6 +48,7 @@ func _refresh() -> void:
 	hp_stat.text = "Health: %d / %d" % [roundi(GameManager.hp), roundi(GameManager.max_hp)]
 	stamina_stat.text = "Stamina: %d / %d" % [roundi(GameManager.stamina), roundi(GameManager.max_stamina)]
 	weapon_stat.text = "Weapon: %s" % GameManager.current_weapon.capitalize()
+	weapon_detail.text = _weapon_stats_text()
 	damage_stat.text = "Strength: %d%%" % roundi(GameManager.damage_mult * 100.0)
 	xp_label.text = "XP available: %d" % GameManager.xp
 	_set_btn(hp_btn, "Health", "hp")
@@ -63,3 +69,18 @@ func _set_btn(btn: Button, label: String, stat: String) -> void:
 func _buy(stat: String) -> void:
 	GameManager.try_upgrade(stat)
 	_refresh()
+
+func _weapon_stats_text() -> String:
+	var mult := 1.0
+	var stamina := 15.0
+	var path := "res://data/" + GameManager.current_weapon + ".tres"
+	if ResourceLoader.exists(path):
+		var w = load(path)
+		if w:
+			if "damage_multiplier" in w:
+				mult = w.damage_multiplier
+			if "stamina_jab" in w:
+				stamina = w.stamina_jab
+	var dmg := SWORD_BASE_DAMAGE * mult * GameManager.damage_mult
+	var kb := SWORD_BASE_KNOCKBACK * GameManager.damage_mult
+	return "Sword: %d dmg · %d knockback · %d stamina/swing" % [roundi(dmg), roundi(kb), roundi(stamina)]

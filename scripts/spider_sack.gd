@@ -22,6 +22,7 @@ func _ready() -> void:
 	contact_damage = 6.0
 	xp_value = 40
 	health_bar_offset_y = -20.0
+	knockback_resist = 0.45
 	super._ready()
 	add_to_group("sack")
 	_spawn_t = spawn_interval
@@ -29,6 +30,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	super._physics_process(delta)   # i-frame blink + contact damage
+	if knockback_active(delta):
+		return
 	if not _player:
 		_player = get_tree().get_first_node_in_group("player")
 
