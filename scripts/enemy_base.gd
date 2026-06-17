@@ -2,6 +2,7 @@ extends CharacterBody2D
 class_name EnemyBase
 
 signal died
+signal half_health   # fires once when hp first drops to/below 50% (mid-fight dialogue cue)
 
 @export var max_hp := 30.0
 @export var contact_damage := 10.0
@@ -24,6 +25,7 @@ var _blink_accum := 0.0
 var _kb_timer := 0.0
 var _player_excepted := false
 var _cobweb_count := 0   # how many cobwebs we're currently standing in
+var _half_announced := false   # guard so half_health only fires once
 var _hitbox: Area2D
 var _sprite: Node  # Node2D or ColorRect — anything with modulate
 var _hb_bg: ColorRect
@@ -75,6 +77,9 @@ func take_damage(amount: float, knockback: Vector2 = Vector2.ZERO) -> void:
 	if hp <= 0.0:
 		die()
 		return
+	if not _half_announced and hp <= max_hp * 0.5:
+		_half_announced = true
+		half_health.emit()
 	i_frames = true
 	_i_timer = i_frame_duration
 	_blink_accum = 0.0

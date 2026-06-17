@@ -37,11 +37,14 @@ func _ready() -> void:
 	# kick off the intro plot scrawl, then hand control to the tutorial prompt
 	dialogue.finished.connect(_on_intro_done)
 	dialogue.play_lines([
-		{"speaker": "Narrator", "text": "You are a fly. A common housefly — discarded, ignored, despised."},
-		{"speaker": "Narrator", "text": "But high above the kingdom, the [color=#ff8a3a]Flying Pig[/color] has stirred. He has tasted ambition. He has tasted bacon."},
-		{"speaker": "Narrator", "text": "Only one creature small enough to slip past his guards. Only one creature stupid enough to try."},
-		{"speaker": "Narrator", "text": "Down here in the dirt, you must learn the basics: to strike, to block, to dance away from death."},
-		{"speaker": "Narrator", "text": "Three sleepy spiders nap nearby. Use them. When pigs fly, only the flies can save us."},
+		{"speaker": "Narrator", "text": "We were never meant to walk."},
+		{"speaker": "Narrator", "text": "We were meant to drift. To belong to the air without asking permission."},
+		{"speaker": "Narrator", "text": "But something below us began to look upward."},
+		{"speaker": "Pig King", "text": "[i]If I had wings… I would never fall again.[/i]"},
+		{"speaker": "Narrator", "text": "And envy learned how to build."},
+		{"speaker": "Narrator", "text": "And how to take."},
+		{"speaker": "Old Fly", "text": "Don't stay still for too long. Stillness is how they find you."},
+		{"speaker": "Old Fly", "text": "Down here in the dirt, learn the basics: to strike, to dance away from death. Three sleepy spiders nap nearby — use them."},
 	])
 
 func _on_intro_done() -> void:
@@ -57,8 +60,8 @@ func _on_spider_died() -> void:
 			mid_dialogue_shown = true
 			dialogue.finished.disconnect(_on_intro_done)
 			dialogue.play_lines([
-				{"speaker": "Narrator", "text": "The spiders fall. Something glints in the dust — a [color=#c08aff]Dagger[/color]. Crude, but yours."},
-				{"speaker": "Narrator", "text": "Grab it. The instant it's in your grip, the floor gives way — down into the Basement."},
+				{"speaker": "Old Fly", "text": "The spiders fall. Something glints in the dust — a [color=#c08aff]Dagger[/color]. Crude, but yours."},
+				{"speaker": "Old Fly", "text": "Grab it. The instant it's in your grip, the floor gives way — down into the Basement."},
 			])
 
 func _on_dagger_collected(_id: String) -> void:

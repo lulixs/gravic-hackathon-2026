@@ -9,7 +9,7 @@ radius = 8.0
 collision_layer = 2
 script = ExtResource("1_spi")
 
-[node name="Sprite" type="Sprite2D" parent="." unique_id=1899098682]
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1899098682]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1078296033]
 shape = SubResource("CircleShape2D_spi")

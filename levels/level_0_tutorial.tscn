@@ -1,7 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://b3lvl00000001"]
+[gd_scene format=3 uid="uid://b3lvl00000001"]
 
-[ext_resource type="Script" path="res://scripts/level_0.gd" id="10_l0"]
-[ext_resource type="PackedScene" path="res://lil_dude.tscn" id="1_nhbfn"]
+[ext_resource type="PackedScene" uid="uid://dh1m5jqolwygd" path="res://lil_dude.tscn" id="1_nhbfn"]
+[ext_resource type="Script" uid="uid://pkt7l26t5l27" path="res://scripts/level_0.gd" id="10_l0"]
 [ext_resource type="PackedScene" uid="uid://b3hud00000001" path="res://scenes/hud.tscn" id="11_hud"]
 [ext_resource type="PackedScene" uid="uid://b3upg00000001" path="res://scenes/upgrade_menu.tscn" id="12_upg"]
 [ext_resource type="PackedScene" uid="uid://b3tut00000001" path="res://scenes/tutorial_prompt.tscn" id="13_tut"]
@@ -15,100 +15,98 @@ size = Vector2(1280, 32)
 [sub_resource type="RectangleShape2D" id="wall_v"]
 size = Vector2(32, 720)
 
-[node name="Level0" type="Node2D"]
+[node name="Level0" type="Node2D" unique_id=147297751]
 script = ExtResource("10_l0")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=424072261]
 offset_right = 1280.0
 offset_bottom = 720.0
 color = Color(0.2, 0.16, 0.12, 1)
 
-[node name="Walls" type="Node2D" parent="."]
+[node name="Walls" type="Node2D" parent="." unique_id=1324415476]
 
-[node name="Top" type="StaticBody2D" parent="Walls"]
+[node name="Top" type="StaticBody2D" parent="Walls" unique_id=425954899]
 position = Vector2(640, 16)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Top"]
+[node name="Sprite" type="ColorRect" parent="Walls/Top" unique_id=1544763476]
 offset_left = -640.0
 offset_top = -16.0
 offset_right = 640.0
 offset_bottom = 16.0
 color = Color(0.1, 0.08, 0.06, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top" unique_id=1469978914]
 shape = SubResource("wall_h")
 
-[node name="Bottom" type="StaticBody2D" parent="Walls"]
+[node name="Bottom" type="StaticBody2D" parent="Walls" unique_id=647376138]
 position = Vector2(640, 704)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Bottom"]
+[node name="Sprite" type="ColorRect" parent="Walls/Bottom" unique_id=66331834]
 offset_left = -640.0
 offset_top = -16.0
 offset_right = 640.0
 offset_bottom = 16.0
 color = Color(0.1, 0.08, 0.06, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom" unique_id=1208948215]
 shape = SubResource("wall_h")
 
-[node name="Left" type="StaticBody2D" parent="Walls"]
+[node name="Left" type="StaticBody2D" parent="Walls" unique_id=251620821]
 position = Vector2(16, 360)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Left"]
+[node name="Sprite" type="ColorRect" parent="Walls/Left" unique_id=1130786046]
 offset_left = -16.0
 offset_top = -360.0
 offset_right = 16.0
 offset_bottom = 360.0
 color = Color(0.1, 0.08, 0.06, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left" unique_id=1035897924]
 shape = SubResource("wall_v")
 
-[node name="Right" type="StaticBody2D" parent="Walls"]
+[node name="Right" type="StaticBody2D" parent="Walls" unique_id=747119211]
 position = Vector2(1264, 360)
 
-[node name="Sprite" type="ColorRect" parent="Walls/Right"]
+[node name="Sprite" type="ColorRect" parent="Walls/Right" unique_id=673832115]
 offset_left = -16.0
 offset_top = -360.0
 offset_right = 16.0
 offset_bottom = 360.0
 color = Color(0.1, 0.08, 0.06, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right" unique_id=467580649]
 shape = SubResource("wall_v")
 
-[node name="Player" parent="." instance=ExtResource("1_nhbfn")]
+[node name="Player" parent="." unique_id=90073356 instance=ExtResource("1_nhbfn")]
 position = Vector2(180, 360)
 
-[node name="Spider1" parent="." instance=ExtResource("15_spi")]
+[node name="Spider1" parent="." unique_id=1235135551 instance=ExtResource("15_spi")]
 position = Vector2(520, 240)
 docile = true
 
-[node name="Spider2" parent="." instance=ExtResource("15_spi")]
+[node name="Spider2" parent="." unique_id=837838376 instance=ExtResource("15_spi")]
 position = Vector2(720, 480)
 docile = true
 
-[node name="Spider3" parent="." instance=ExtResource("15_spi")]
+[node name="Spider3" parent="." unique_id=787391918 instance=ExtResource("15_spi")]
 position = Vector2(920, 300)
 docile = true
 
-[node name="DaggerPickup" parent="." instance=ExtResource("16_wpk")]
+[node name="DaggerPickup" parent="." unique_id=1371246859 instance=ExtResource("16_wpk")]
 position = Vector2(640, 360)
-weapon_id = "dagger"
-display_name = "Dagger"
 
-[node name="HUD" parent="." instance=ExtResource("11_hud")]
+[node name="HUD" parent="." unique_id=150796369 instance=ExtResource("11_hud")]
 
-[node name="UpgradeMenu" parent="." instance=ExtResource("12_upg")]
+[node name="UpgradeMenu" parent="." unique_id=228374210 instance=ExtResource("12_upg")]
 
-[node name="TutorialPrompt" parent="." instance=ExtResource("13_tut")]
+[node name="TutorialPrompt" parent="." unique_id=1775922611 instance=ExtResource("13_tut")]
 
-[node name="DialogueBox" parent="." instance=ExtResource("14_dlg")]
+[node name="DialogueBox" parent="." unique_id=1021764136 instance=ExtResource("14_dlg")]
 
-[node name="CompleteLabel" type="CanvasLayer" parent="."]
+[node name="CompleteLabel" type="CanvasLayer" parent="." unique_id=1973509202]
 visible = false
 
-[node name="Panel" type="ColorRect" parent="CompleteLabel"]
+[node name="Panel" type="ColorRect" parent="CompleteLabel" unique_id=1898278298]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -116,7 +114,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Label" type="Label" parent="CompleteLabel"]
+[node name="Label" type="Label" parent="CompleteLabel" unique_id=1956210629]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
